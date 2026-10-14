@@ -183,38 +183,32 @@
 
     #chatbot-window {
       position: fixed;
-      bottom: 100px;
-      right: 24px;
-      width: 350px;
-      max-width: calc(100vw - 32px);
+      bottom: 80px;
+      right: 8px;
+      width: calc(100vw - 16px);
+      max-width: 100%;
       height: 0;
-      max-height: 500px;
+      max-height: 70vh;
       background: rgba(11, 15, 20, 0.96);
       backdrop-filter: blur(20px);
       border: 1px solid rgba(74, 144, 226, 0.5);
-      border-radius: 16px;
+      border-radius: 14px;
       box-shadow: 0 8px 32px rgba(30, 91, 168, 0.3), 0 0 24px rgba(74, 144, 226, 0.15);
-      display: none;
+      display: flex;
       flex-direction: column;
       z-index: 100;
       overflow: hidden;
-      animation: slideUpChat 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
     }
 
     #chatbot-window.show {
-      display: flex;
-      height: 460px;
-    }
-
-    @keyframes slideUpChat {
-      from {
-        opacity: 0;
-        transform: translateY(20px) scale(0.95);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+      height: 70vh;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
     }
 
     .chatbot-header {
@@ -420,32 +414,33 @@
       50% { opacity: 1; transform: translateY(-8px); }
     }
 
-    @media (max-width: 480px) {
-      #chatbot-window.show {
-        height: 70vh;
+    @media (min-width: 768px) {
+      #chatbot-window {
+        width: 350px;
+        bottom: 100px;
+        right: 24px;
+        border-radius: 16px;
         max-height: 500px;
       }
 
-      #chatbot-window {
-        width: calc(100vw - 16px);
-        right: 8px;
-        bottom: 90px;
-        border-radius: 14px;
+      #chatbot-window.show {
+        height: 460px;
+        max-height: 500px;
       }
 
       .chatbot-header h3 {
-        font-size: 13px;
+        font-size: 14px;
       }
 
       .chat-bubble {
-        max-width: 90%;
+        max-width: 85%;
         font-size: 12px;
         padding: 8px 11px;
       }
 
       #chatbot-input {
-        font-size: 11px;
-        padding: 7px 10px;
+        font-size: 12px;
+        padding: 8px 12px;
       }
     }
 
@@ -557,27 +552,9 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-blue-600 selection:text-white relative">
 
-  <!-- 
-    ============================================
-    CONFIGURATION NOTES:
-    ============================================
-    1. Logo: Replace "./logo.png" in navbar with your actual logo path
-    2. Social Media Links (in Contact Section):
-       ✓ Phone: 0401 877 208 
-       ✓ Email: info@everlast.com
-       ✓ Facebook: https://www.facebook.com/share/18TSPGtD59/
-       ✓ Instagram: https://instagram.com/everlast_windows_and_doors
-    3. Color Scheme: Updated to match new EVERLAST logo (Blue #2563eb)
-    ============================================
-  -->
-  
-  <!-- Skip to Content Link -->
   <a href="#main-content" class="skip-to-content">Skip to main content</a>
-
-  <!-- Header / Navigation Bar - Sticky -->
   <header id="navbar" class="w-full bg-gradient-to-b from-[#0b0f14]/95 to-[#0a0d12]/90 backdrop-blur-xl border-b border-blue-500/20 py-2 px-4 md:px-6 sticky top-0 z-50 flex items-center justify-between shadow-lg transition-all duration-300" role="banner">
     <div class="flex items-center gap-2 md:gap-3">
-      <!-- Menu Button -->
       <button 
         id="open-drawer-btn" 
         class="p-2 hover:bg-white/10 rounded-lg transition-colors text-white focus:outline-none md:hidden" 
@@ -587,7 +564,6 @@
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
       </button>
       
-      <!-- Logo: Circular Ring Badge -->
       <a href="#hero" class="flex items-center hover:opacity-90 transition-all flex-shrink-0 group" aria-label="EVERLAST Home">
         <div class="w-16 md:w-20 h-16 md:h-20 rounded-full bg-gradient-to-br from-blue-600/50 to-blue-500/30 border-2 border-blue-400/80 flex items-center justify-center shadow-2xl shadow-blue-500/25 group-hover:shadow-blue-400/50 group-hover:border-blue-300 transition-all duration-300 overflow-hidden backdrop-blur-sm" style="aspect-ratio: 1;">
           <img 
@@ -602,7 +578,6 @@
       </a>
     </div>
     
-    <!-- Desktop Navigation -->
     <nav class="hidden md:flex items-center gap-8 text-xs font-semibold tracking-wider text-slate-300" role="navigation" aria-label="Main navigation">
       <a href="#hero" class="hover:text-blue-400 transition-colors duration-200">HOME</a>
       <a href="#services" class="hover:text-blue-400 transition-colors duration-200">SERVICES</a>
@@ -618,7 +593,6 @@
     </div>
   </header>
 
-  <!-- Navigation Drawer -->
   <div id="drawer-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden" aria-hidden="true"></div>
   <div id="drawer" class="fixed top-0 left-0 h-full w-72 bg-[#0b0f14] border-r border-white/10 z-50 shadow-2xl flex flex-col justify-between p-6" role="navigation" aria-label="Mobile navigation">
     <div>
@@ -656,10 +630,8 @@
     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
   </button>
 
-  <!-- Main Content -->
   <main id="main-content">
 
-    <!-- Hero Section -->
     <section id="hero" class="relative w-full min-h-screen pt-24 md:pt-32 pb-12 md:pb-16 flex flex-col justify-between items-center bg-cover bg-center px-4 md:px-6" 
              style="background-image: linear-gradient(to bottom, rgba(11,15,20,0.7), rgba(11,15,20,0.9)), url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80');">
       
@@ -675,14 +647,12 @@
         </p>
       </div>
 
-      <!-- Products Section with Tabs -->
       <div id="products" class="relative z-10 w-full max-w-6xl mx-auto my-8 md:my-12 px-2 md:px-0" role="region" aria-labelledby="products-heading">
         <div class="text-center mb-8">
           <h2 id="products-heading" class="text-3xl md:text-4xl font-bold text-white mb-2">Our Products</h2>
           <p class="text-slate-400 text-sm md:text-base">Premium windows, doors, and shower screens engineered for perfection</p>
         </div>
 
-        <!-- Tab Navigation -->
         <div class="flex flex-wrap justify-center gap-2 mb-8">
           <button 
             data-tab="doors" 
@@ -707,7 +677,6 @@
           </button>
         </div>
 
-        <!-- DOORS Tab -->
         <div id="doors-content" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" style="display: grid;">
           <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
             <h3 class="font-bold text-white mb-2">Sliding Doors</h3>
@@ -743,7 +712,6 @@
           </article>
         </div>
 
-        <!-- WINDOWS Tab -->
         <div id="windows-content" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" style="display: none;">
           <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
             <h3 class="font-bold text-white mb-2">Fixed Glass</h3>
@@ -783,7 +751,6 @@
           </article>
         </div>
 
-        <!-- SHOWER SCREENS Tab -->
         <div id="shower-content" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" style="display: none;">
           <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
             <h3 class="font-bold text-white mb-2">Shower Screen</h3>
@@ -808,7 +775,6 @@
         </div>
       </div>
 
-      <!-- CTA Button -->
       <div class="relative z-10 w-full flex justify-center px-4 md:px-0">
         <a href="#contact" class="glass-button px-6 md:px-8 py-3 md:py-4 rounded-xl text-xs sm:text-sm md:text-xs font-bold tracking-widest uppercase text-white shadow-lg hover:shadow-xl transition-all">
           REQUEST CONSULTATION
@@ -817,7 +783,6 @@
 
     </section>
 
-    <!-- Projects Gallery Section -->
     <section id="projects" class="py-16 md:py-20 px-4 md:px-6 max-w-6xl mx-auto" role="region" aria-labelledby="projects-heading">
       <div class="text-center max-w-xl mx-auto mb-10 md:mb-12 space-y-2">
         <h2 id="projects-heading" class="text-2xl md:text-3xl font-extrabold tracking-tight uppercase text-white">Featured Projects</h2>
@@ -867,7 +832,6 @@
       </div>
     </section>
 
-    <!-- About Section -->
     <section id="about" class="py-12 md:py-16 px-4 md:px-6 max-w-4xl mx-auto text-center" role="region" aria-labelledby="about-heading">
       <h2 id="about-heading" class="text-2xl md:text-3xl font-extrabold uppercase text-white mb-4">About Everlast</h2>
       <p class="text-slate-400 text-sm md:text-base leading-relaxed">
@@ -875,17 +839,14 @@
       </p>
     </section>
 
-    <!-- Contact Section with Social Media -->
     <section id="contact" class="py-16 md:py-20 px-4 md:px-6 max-w-2xl mx-auto w-full" role="region" aria-labelledby="contact-heading">
       <div class="text-center mb-10 md:mb-12">
         <h2 id="contact-heading" class="text-2xl md:text-3xl font-extrabold tracking-tight uppercase text-white mb-2">Get in Touch</h2>
         <p class="text-slate-400 text-sm md:text-base">Connect with us through your preferred channel</p>
       </div>
 
-      <!-- Social Media Icons Grid -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
         
-        <!-- Phone -->
         <a 
           href="tel:+61401877208" 
           class="subtle-glass rounded-xl md:rounded-2xl p-5 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-3 group hover:border-blue-500/50 transition-all duration-300"
@@ -901,7 +862,6 @@
           </div>
         </a>
 
-        <!-- Gmail -->
         <a 
           href="mailto:info@everlast.com" 
           class="subtle-glass rounded-xl md:rounded-2xl p-5 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-3 group hover:border-blue-500/50 transition-all duration-300"
@@ -917,7 +877,6 @@
           </div>
         </a>
 
-        <!-- Facebook -->
         <a 
           href="https://www.facebook.com/share/18TSPGtD59/" 
           target="_blank"
@@ -935,7 +894,6 @@
           </div>
         </a>
 
-        <!-- Instagram -->
         <a 
           href="https://instagram.com/everlast_windows_and_doors" 
           target="_blank"
@@ -956,7 +914,6 @@
 
       </div>
 
-      <!-- Additional Contact Info -->
       <div class="subtle-glass rounded-xl md:rounded-2xl p-5 md:p-6 mt-8 md:mt-12 text-center">
         <p class="text-xs md:text-sm text-slate-400 mb-2">Or reach out directly via email for detailed consultations</p>
         <a href="mailto:info@everlast.com" class="text-sm md:text-base font-semibold text-blue-400 hover:text-blue-300 transition-colors">
@@ -967,12 +924,10 @@
 
   </main>
 
-  <!-- Footer -->
   <footer class="w-full border-t border-blue-500/20 py-6 md:py-8 px-4 md:px-6 text-center text-slate-500 text-xs md:text-sm" role="contentinfo">
     <p>&copy; 2026 EVERLAST Windows & Doors. All rights reserved.</p>
   </footer>
 
-  <!-- Chatbot Widget -->
   <div id="chatbot-button" role="button" tabindex="0" aria-label="Open EVERLAST Chat Support" title="Chat with us">
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M14 2C7.37 2 2 6.5 2 12c0 2.5 1 4.8 2.7 6.5L3 26l8.5-5.5C12.5 20.8 13.2 21 14 21c6.63 0 12-4.5 12-10S20.63 2 14 2z" fill="white"/>
@@ -998,7 +953,6 @@
     </div>
   </div>
 
-  <!-- Main JavaScript -->
   <script>
     // ============================================
     // Utility Functions
