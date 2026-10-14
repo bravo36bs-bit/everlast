@@ -1,1396 +1,948 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="EVERLAST - Premium Windows & Doors. High-precision aluminium profiles and ultra-sleek glass solutions.">
-  <title>EVERLAST - Windows & Doors | Premium Architectural Systems</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>EVERLAST Windows & Doors - Premium Glass Solutions</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+  
   <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --bg-dark: #0b0f14;
+      --bg-card: rgba(15, 23, 42, 0.8);
+      --text-light: #e2e8f0;
+      --text-muted: #94a3b8;
+    }
+
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
     }
-    
+
     html {
       scroll-behavior: smooth;
+      scroll-padding-top: 80px;
     }
 
     body {
       font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(135deg, #0a0e13 0%, #0f1419 100%);
-      color: #f8fafc;
-      overflow-x: hidden;
-    }
-
-    body.drawer-open {
-      overflow: hidden;
-    }
-
-    .subtle-glass {
-      background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .glass-button {
-      background: rgba(30, 91, 168, 0.2);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      border: 1px solid rgba(74, 144, 226, 0.5);
-      transition: all 0.3s ease;
-    }
-
-    .glass-button:hover {
-      background: rgba(30, 91, 168, 0.35);
-      border-color: rgba(74, 144, 226, 1);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(30, 91, 168, 0.2);
-    }
-
-    .glass-button:focus {
-      outline: 2px solid rgba(74, 144, 226, 0.7);
-      outline-offset: 2px;
-    }
-
-    #navbar {
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 20px rgba(74, 144, 226, 0.1);
-    }
-
-    #navbar.nav-hidden {
-      /* Removed - navbar stays visible */
-    }
-
-    /* Drawer Styles */
-    #drawer {
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      transform: translateX(-100%);
-    }
-
-    #drawer.drawer-open {
-      transform: translateX(0);
-    }
-
-    #drawer-backdrop {
-      transition: opacity 0.3s ease;
-      opacity: 0;
-    }
-
-    #drawer-backdrop.backdrop-visible {
-      opacity: 1;
-    }
-
-    /* Toast Notification */
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(16, 185, 129, 0.95);
-      backdrop-filter: blur(10px);
-      padding: 16px 24px;
-      border-radius: 8px;
-      color: white;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      line-height: 1.6;
       font-size: 14px;
-      font-weight: 600;
-      z-index: 9999;
-      animation: slideInUp 0.3s ease;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     }
 
-    .toast.error {
-      background: rgba(239, 68, 68, 0.95);
+    a {
+      text-decoration: none;
+      color: inherit;
     }
 
-    @keyframes slideInUp {
-      from {
-        transform: translateY(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
-    @keyframes slideOutDown {
-      from {
-        transform: translateY(0);
-        opacity: 1;
-      }
-      to {
-        transform: translateY(100%);
-        opacity: 0;
-      }
-    }
-
-    .toast.hide {
-      animation: slideOutDown 0.3s ease forwards;
-    }
-
-    /* ========================================
-       CHATBOT STYLES
-       ======================================== */
-    #chatbot-button {
-      position: fixed;
-      bottom: 24px;
-      left: 24px;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      border: 2px solid rgba(16, 185, 129, 0.8);
-      box-shadow: 0 4px 24px rgba(16, 185, 129, 0.4), 0 0 20px rgba(16, 185, 129, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 101;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      font-size: 26px;
-      backdrop-filter: blur(4px);
-      overflow: hidden;
-    }
-
-    #chatbot-button::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3) 0%, transparent 50%);
-      pointer-events: none;
-    }
-
-    #chatbot-button svg {
-      position: relative;
-      z-index: 1;
-      filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.4));
-    }
-
-    #chatbot-button:hover {
-      transform: scale(1.1) translateY(-4px);
-      box-shadow: 0 8px 32px rgba(37, 99, 235, 0.5), 0 0 24px rgba(59, 130, 246, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    }
-
-    #chatbot-button:active {
-      transform: scale(0.96);
-    }
-
-    #chatbot-button.open {
-      background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
-      box-shadow: 0 4px 24px rgba(29, 78, 216, 0.5), 0 0 20px rgba(37, 99, 235, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    }
-
-    #chatbot-window {
-      position: fixed;
-      bottom: 80px;
-      left: 8px;
-      width: calc(100vw - 16px);
-      max-width: 420px;
-      height: 0;
-      max-height: 600px;
-      background: linear-gradient(135deg, rgba(11, 15, 20, 0.98) 0%, rgba(15, 20, 30, 0.98) 100%);
-      backdrop-filter: blur(25px);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(16, 185, 129, 0.2);
-      display: flex;
-      flex-direction: column;
-      z-index: 100;
-      overflow: hidden;
-      opacity: 0;
-      transform: translateY(30px) scale(0.92);
-      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-      pointer-events: none;
-    }
-
-    #chatbot-window.show {
-      height: 550px;
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      pointer-events: auto;
-    }
-
-    .chatbot-header {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
-      backdrop-filter: blur(10px);
-      padding: 16px 18px;
-      color: #e0f2fe;
-      font-weight: 700;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(16, 185, 129, 0.2);
-      letter-spacing: 0.5px;
-      flex-shrink: 0;
-      min-height: 50px;
-    }
-
-    .chatbot-header h3 {
-      font-size: 16px;
-      margin: 0;
-      letter-spacing: 0.3px;
-    }
-
-    .chatbot-header h3 {
-      margin: 0;
-      font-size: 14px;
-      color: #f1f5f9;
-      font-weight: 600;
-    }
-
-    .chatbot-header button {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(74, 144, 226, 0.2);
-      color: #94a3b8;
-      font-size: 16px;
-      cursor: pointer;
-      padding: 0;
-      width: 26px;
-      height: 26px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 5px;
-      transition: all 0.2s ease;
-    }
-
-    .chatbot-header button:hover {
-      background: rgba(74, 144, 226, 0.15);
-      color: #cbd5e1;
-      border-color: rgba(74, 144, 226, 0.4);
-    }
-
-    .chatbot-header-actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    #clear-chat-btn {
-      background: rgba(239, 68, 68, 0.25);
-      border: 1.5px solid rgba(239, 68, 68, 0.6);
-      color: #fecaca;
-      padding: 6px 14px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.25s ease;
+    button {
       font-family: 'Montserrat', sans-serif;
-      letter-spacing: 0.3px;
-    }
-
-    #clear-chat-btn:hover {
-      background: rgba(239, 68, 68, 0.4);
-      border-color: rgba(239, 68, 68, 1);
-      color: #fef2f2;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-    }
-
-    #clear-chat-btn:active {
-      transform: translateY(0) scale(0.98);
-    }
-
-    #close-chatbot {
-      background: rgba(16, 185, 129, 0.2);
-      border: 1.5px solid rgba(16, 185, 129, 0.6);
-      color: #a7f3d0;
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      font-size: 20px;
-      font-weight: 700;
+      border: none;
       cursor: pointer;
-      transition: all 0.25s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-      font-family: 'Montserrat', sans-serif;
     }
 
-    #close-chatbot:hover {
-      background: rgba(16, 185, 129, 0.35);
-      border-color: rgba(16, 185, 129, 1);
-      color: #ecfdf5;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
-
-    #close-chatbot:active {
-      transform: translateY(0) scale(0.98);
-    }
-
-    .chatbot-messages {
-      flex: 1;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding: 16px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      min-height: 0;
-      background: rgba(255, 255, 255, 0.01);
-    }
-
-    .chatbot-messages::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .chatbot-messages::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.02);
-    }
-
-    .chatbot-messages::-webkit-scrollbar-thumb {
-      background: rgba(74, 144, 226, 0.4);
-      border-radius: 3px;
-    }
-
-    .chat-message {
-      display: flex;
-      gap: 8px;
-      animation: fadeInMsg 0.3s ease;
-    }
-
-    @keyframes fadeInMsg {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .chat-message.user {
-      justify-content: flex-end;
-    }
-
-    .chat-bubble {
-      max-width: 88%;
-      padding: 11px 15px;
-      border-radius: 16px;
-      font-size: 13px;
-      line-height: 1.45;
-      word-wrap: break-word;
-      font-weight: 500;
-      animation: fadeInUp 0.3s ease-out;
-    }
-
-    .chat-message.user .chat-bubble {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.35) 0%, rgba(16, 185, 129, 0.25) 100%);
-      border: 1px solid rgba(16, 185, 129, 0.45);
-      color: #a7f3d0;
-      border-radius: 16px 16px 4px 16px;
-      align-self: flex-end;
-    }
-
-    .chat-message.bot .chat-bubble {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      color: #e0f2fe;
-      border-radius: 16px 16px 16px 4px;
-      align-self: flex-start;
-    }
-
-    .chatbot-input-area {
-      padding: 14px 14px;
-      border-top: 1px solid rgba(16, 185, 129, 0.15);
-      display: flex;
-      gap: 10px;
-      flex-shrink: 0;
-      min-height: 50px;
-      align-items: center;
-      background: rgba(16, 185, 129, 0.04);
-    }
-
-    #chatbot-input {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.07);
-      border: 1.5px solid rgba(16, 185, 129, 0.3);
-      border-radius: 10px;
-      padding: 10px 14px;
-      color: #e0f2fe;
-      font-size: 13px;
-      font-family: 'Montserrat', sans-serif;
-      transition: all 0.25s ease;
-      height: 40px;
-      font-weight: 500;
-    }
-
-    #chatbot-input::placeholder {
-      color: rgba(224, 242, 254, 0.4);
-    }
-
-    #chatbot-input:focus {
-      outline: none;
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(16, 185, 129, 0.6);
-      box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
-    }
-
-    #chatbot-send {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.45) 0%, rgba(16, 185, 129, 0.35) 100%);
-      border: 1.5px solid rgba(16, 185, 129, 0.55);
-      border-radius: 10px;
-      padding: 0;
-      color: #a7f3d0;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 16px;
-      transition: all 0.25s ease;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    #chatbot-send:hover {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.6) 0%, rgba(16, 185, 129, 0.5) 100%);
-      border-color: rgba(16, 185, 129, 0.85);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
-
-    #chatbot-send:active {
-      transform: translateY(0) scale(0.98);
-    }
-
-    .chatbot-loading {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-    }
-
-    .chatbot-loading span {
-      width: 6px;
-      height: 6px;
-      background: rgba(74, 144, 226, 0.8);
-      border-radius: 50%;
-      animation: bounce 1.4s infinite;
-    }
-
-    .chatbot-loading span:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-
-    .chatbot-loading span:nth-child(3) {
-      animation-delay: 0.4s;
-    }
-
-    @keyframes bounce {
-      0%, 100% { opacity: 0.4; transform: translateY(0); }
-      50% { opacity: 1; transform: translateY(-8px); }
-    }
-
-    @media (min-width: 768px) {
-      #chatbot-window {
-        width: 420px;
-        bottom: 100px;
-        left: auto;
-        right: 24px;
-        border-radius: 20px;
-        max-height: 650px;
-      }
-
-      #chatbot-window.show {
-        height: 600px;
-        max-height: 650px;
-      }
-
-      .chatbot-header {
-        padding: 18px 20px;
-      }
-
-      .chatbot-header h3 {
-        font-size: 16px;
-      }
-
-      .chat-bubble {
-        max-width: 85%;
-        font-size: 13px;
-        padding: 11px 15px;
-      }
-
-      #chatbot-input {
-        font-size: 13px;
-        padding: 10px 14px;
-        height: 40px;
-      }
-
-      #chatbot-send {
-        width: 40px;
-        height: 40px;
-      }
-
-      .chatbot-input-area {
-        padding: 16px 16px;
-        min-height: 52px;
-      }
-    }
-
-    /* Loading State */
-    .btn-loading {
-      pointer-events: none;
-      opacity: 0.7;
-    }
-
-    .spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Image Loading */
-    img {
-      display: block;
-    }
-
-    /* Form Styles */
-    .form-input {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 0.5rem;
-      padding: 0.625rem 1rem;
-      font-size: 0.875rem;
-      color: white;
-      transition: all 0.3s ease;
-    }
-
-    .form-input::placeholder {
-      color: rgba(148, 163, 184, 0.6);
-    }
-
-    .form-input:focus {
-      outline: none;
-      border-color: rgba(56, 189, 248, 1);
-      background: rgba(15, 23, 42, 0.8);
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
-    }
-
-    .form-input:invalid:not(:placeholder-shown) {
-      border-color: rgba(239, 68, 68, 1);
-    }
-
-    .form-error {
-      color: #ef4444;
-      font-size: 0.75rem;
-      margin-top: 0.25rem;
-      display: none;
-    }
-
-    .form-input:invalid:not(:placeholder-shown) ~ .form-error {
-      display: block;
-    }
-
-    /* Skip to Content Link */
+    /* Skip Link */
     .skip-to-content {
       position: absolute;
       top: -40px;
       left: 0;
-      background: #38bdf8;
+      background: var(--primary);
       color: white;
       padding: 8px;
-      text-decoration: none;
       z-index: 100;
+      border-radius: 0 0 4px 0;
     }
 
     .skip-to-content:focus {
       top: 0;
     }
 
-    /* Focus Visible Styles */
-    *:focus-visible {
-      outline: 2px solid #4a90e2;
-      outline-offset: 2px;
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      background: rgba(11, 15, 20, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(37, 99, 235, 0.2);
+      z-index: 50;
     }
 
-    /* Floating Button Animation */
-    #floating-menu-btn {
-      transition: opacity 0.3s ease, transform 0.3s ease;
+    nav {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    #floating-menu-btn.hidden-btn {
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .logo-ring {
+      width: 48px;
+      height: 48px;
+      border: 2px solid var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      mix-blend-mode: lighten;
+    }
+
+    .nav-brand {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .nav-brand {
+        display: block;
+      }
+    }
+
+    .nav-center {
+      flex: 1;
+      display: none;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    @media (min-width: 768px) {
+      .nav-center {
+        display: flex;
+      }
+    }
+
+    .nav-center a {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      transition: color 0.3s;
+    }
+
+    .nav-center a:hover {
+      color: var(--primary);
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .hamburger-btn {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    @media (min-width: 768px) {
+      .hamburger-btn {
+        display: none;
+      }
+    }
+
+    .hamburger-btn span {
+      width: 24px;
+      height: 2px;
+      background: var(--text-light);
+      border-radius: 1px;
+      transition: all 0.3s;
+    }
+
+    .hamburger-btn.open span:nth-child(1) {
+      transform: rotate(45deg) translate(10px, 10px);
+    }
+
+    .hamburger-btn.open span:nth-child(2) {
       opacity: 0;
-      transform: scale(0.8);
+    }
+
+    .hamburger-btn.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -6px);
+    }
+
+    .btn-quote {
+      background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      transition: all 0.3s;
+      border: 1px solid rgba(59, 130, 246, 0.5);
+    }
+
+    .btn-quote:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+    }
+
+    /* Drawer */
+    #drawer {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 280px;
+      height: 100vh;
+      background: rgba(11, 15, 20, 0.98);
+      backdrop-filter: blur(10px);
+      border-right: 1px solid rgba(37, 99, 235, 0.2);
+      z-index: 40;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+      padding-top: 20px;
+    }
+
+    #drawer.drawer-open {
+      transform: translateX(0);
+    }
+
+    .drawer-close {
+      float: right;
+      margin-right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--text-light);
+      background: none;
+      width: auto;
+      height: auto;
+    }
+
+    .drawer-menu {
+      list-style: none;
+      padding: 40px 20px;
+      clear: both;
+    }
+
+    .drawer-menu li {
+      margin: 0 0 20px 0;
+    }
+
+    .drawer-menu a {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-light);
+      transition: color 0.3s;
+      display: block;
+      padding: 12px 0;
+    }
+
+    .drawer-menu a:hover {
+      color: var(--primary);
+    }
+
+    #drawer-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0);
+      opacity: 0;
+      z-index: 30;
+      transition: opacity 0.3s;
       pointer-events: none;
     }
 
-    /* Smooth Transitions */
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
+    #drawer-backdrop.drawer-open {
+      background: rgba(0, 0, 0, 0.5);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    body.drawer-open {
+      overflow: hidden;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(11, 15, 20, 1) 0%, rgba(15, 23, 42, 0.8) 100%);
+      position: relative;
+      overflow: hidden;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      top: -200px;
+      right: -200px;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(30px); }
+    }
+
+    .hero-content {
+      max-width: 800px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+    }
+
+    @media (min-width: 768px) {
+      .hero h1 {
+        font-size: 56px;
       }
     }
+
+    .hero p {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+      color: white;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.3s;
+      border: 1px solid rgba(59, 130, 246, 0.5);
+      letter-spacing: 0.5px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(37, 99, 235, 0.4);
+    }
+
+    /* Products Section */
+    .section {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 80px 20px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-title h2 {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+    }
+
+    .section-title p {
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* Tabs */
+    .tabs-container {
+      margin-bottom: 60px;
+    }
+
+    .tabs-nav {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .tab-btn {
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      color: var(--text-muted);
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .tab-btn:hover {
+      background: rgba(37, 99, 235, 0.15);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    @media (min-width: 640px) {
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .product-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .product-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--primary);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(37, 99, 235, 0.2);
+    }
+
+    .product-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(37, 99, 235, 0.3);
+    }
+
+    .product-name {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .product-description {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      text-align: center;
+    }
+
+    .contact-intro {
+      color: var(--text-muted);
+      font-size: 16px;
+      margin-bottom: 50px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 50px;
+    }
+
+    @media (min-width: 768px) {
+      .contact-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 32px;
+      }
+    }
+
+    .contact-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      border-radius: 12px;
+      padding: 32px 24px;
+      transition: all 0.3s;
+    }
+
+    .contact-card:hover {
+      background: rgba(37, 99, 235, 0.1);
+      border-color: var(--primary);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(37, 99, 235, 0.2);
+    }
+
+    .contact-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 16px;
+      border: 1px solid rgba(59, 130, 246, 0.5);
+    }
+
+    .contact-label {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .contact-link {
+      font-size: 13px;
+      color: var(--text-muted);
+      transition: color 0.3s;
+    }
+
+    .contact-link:hover {
+      color: var(--primary);
+    }
+
+    .contact-email-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 500px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .contact-email-box p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .contact-email {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(11, 15, 20, 0.95);
+      border-top: 1px solid rgba(37, 99, 235, 0.2);
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 80px;
+    }
+
+    /* Animations */
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    [data-animation="slideDown"] {
+      animation: slideDown 0.6s ease-out;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-blue-600 selection:text-white relative">
 
+<body>
   <a href="#main-content" class="skip-to-content">Skip to main content</a>
-  <header id="navbar" class="w-full bg-gradient-to-b from-[#0b0f14]/95 to-[#0a0d12]/90 backdrop-blur-xl border-b border-blue-500/20 py-2 px-4 md:px-6 sticky top-0 z-50 flex items-center justify-between shadow-lg transition-all duration-300" role="banner">
-    <div class="flex items-center gap-2 md:gap-3">
-      <button 
-        id="open-drawer-btn" 
-        class="p-2 hover:bg-white/10 rounded-lg transition-colors text-white focus:outline-none md:hidden" 
-        aria-label="Open navigation menu"
-        aria-expanded="false"
-        aria-controls="drawer">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-      </button>
-      
-      <a href="#hero" class="flex items-center hover:opacity-90 transition-all flex-shrink-0 group" aria-label="EVERLAST Home">
-        <div class="w-16 md:w-20 h-16 md:h-20 rounded-full bg-gradient-to-br from-blue-600/50 to-blue-500/30 border-2 border-blue-400/80 flex items-center justify-center shadow-2xl shadow-blue-500/25 group-hover:shadow-blue-400/50 group-hover:border-blue-300 transition-all duration-300 overflow-hidden backdrop-blur-sm" style="aspect-ratio: 1;">
-          <img 
-            src="./logo.png" 
-            alt="EVERLAST Windows and Doors Logo" 
-            class="w-full h-full object-cover rounded-full"
-            loading="eager"
-            width="180"
-            height="180"
-            style="mix-blend-mode: lighten; filter: brightness(1.1) saturate(1.2) contrast(1.1);">
-        </div>
-      </a>
-    </div>
-    
-    <nav class="hidden md:flex items-center gap-8 text-xs font-semibold tracking-wider text-slate-300" role="navigation" aria-label="Main navigation">
-      <a href="#hero" class="hover:text-blue-400 transition-colors duration-200">HOME</a>
-      <a href="#services" class="hover:text-blue-400 transition-colors duration-200">SERVICES</a>
-      <a href="#projects" class="hover:text-blue-400 transition-colors duration-200">PROJECTS</a>
-      <a href="#about" class="hover:text-blue-400 transition-colors duration-200">ABOUT</a>
-      <a href="#contact" class="hover:text-blue-400 transition-colors duration-200">CONTACT</a>
-    </nav>
 
-    <div class="flex items-center gap-3">
-      <a href="#contact" class="glass-button px-4 py-2 rounded-full text-[11px] font-bold tracking-wider uppercase text-blue-400" aria-label="Get a quote">
-        Get Quote
-      </a>
-    </div>
+  <header>
+    <nav>
+      <div class="logo-container">
+        <button class="hamburger-btn" id="open-drawer-btn" aria-label="Open menu" title="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <a href="#hero" class="flex items-center gap-3 hover:opacity-90 transition-all flex-shrink-0">
+          <div class="logo-ring">
+            <img src="./logo.png" alt="EVERLAST Logo" class="logo-img">
+          </div>
+          <span class="nav-brand">EVERLAST</span>
+        </a>
+      </div>
+
+      <div class="nav-center">
+        <a href="#products">Products</a>
+        <a href="#contact">Contact</a>
+        <a href="#services">Services</a>
+      </div>
+
+      <div class="nav-right">
+        <a href="#contact" class="btn-quote">GET QUOTE</a>
+      </div>
+    </nav>
   </header>
 
-  <div id="drawer-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden" aria-hidden="true"></div>
-  <div id="drawer" class="fixed top-0 left-0 h-full w-72 bg-[#0b0f14] border-r border-white/10 z-50 shadow-2xl flex flex-col justify-between p-6" role="navigation" aria-label="Mobile navigation">
-    <div>
-      <div class="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
-        <span class="font-extrabold text-sm tracking-widest text-white">MENU</span>
-        <button 
-          id="close-drawer-btn" 
-          class="p-2 text-slate-400 hover:text-white transition-colors" 
-          aria-label="Close navigation menu"
-          aria-expanded="true"
-          aria-controls="drawer">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
-      </div>
-      <nav class="flex flex-col gap-0 text-sm font-semibold tracking-wider text-slate-300">
-        <a href="#hero" class="drawer-link hover:text-blue-400 transition-colors py-3 px-2 border-b border-white/5">HOME</a>
-        <a href="#services" class="drawer-link hover:text-blue-400 transition-colors py-3 px-2 border-b border-white/5">SERVICES</a>
-        <a href="#projects" class="drawer-link hover:text-blue-400 transition-colors py-3 px-2 border-b border-white/5">PROJECTS</a>
-        <a href="#about" class="drawer-link hover:text-blue-400 transition-colors py-3 px-2 border-b border-white/5">ABOUT US</a>
-        <a href="#contact" class="drawer-link hover:text-blue-400 transition-colors py-3 px-2 border-b border-white/5">CONTACT</a>
-      </nav>
-    </div>
-    <div class="text-xs text-slate-500 text-center">
-      <p>&copy; 2026 EVERLAST</p>
-    </div>
+  <div id="drawer-backdrop"></div>
+  <div id="drawer">
+    <button class="drawer-close" id="close-drawer-btn" aria-label="Close menu">×</button>
+    <ul class="drawer-menu">
+      <li><a href="#products">Products</a></li>
+      <li><a href="#contact">Contact Us</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
   </div>
-
-  <!-- Floating Menu Button (Mobile) -->
-  <button 
-    id="floating-menu-btn" 
-    class="fixed bottom-6 left-6 z-40 bg-blue-600/30 backdrop-blur-md border border-blue-500/60 text-blue-400 p-3.5 rounded-full shadow-2xl hover:bg-blue-600/50 transition-all flex items-center justify-center md:hidden" 
-    aria-label="Open navigation menu"
-    aria-expanded="false"
-    aria-controls="drawer">
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-  </button>
 
   <main id="main-content">
-
-    <section id="hero" class="relative w-full min-h-screen pt-24 md:pt-32 pb-12 md:pb-16 flex flex-col justify-between items-center bg-cover bg-center px-4 md:px-6" 
-             style="background-image: linear-gradient(to bottom, rgba(11,15,20,0.7), rgba(11,15,20,0.9)), url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80');">
-      
-      <div class="relative z-10 text-center max-w-3xl mx-auto mt-8 space-y-4">
-        <span class="inline-block px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase text-blue-300 bg-blue-600/15 border border-blue-500/40">
-          Next-Gen Architectural Systems
-        </span>
-        <h1 class="text-2xl sm:text-4xl md:text-6xl font-extrabold tracking-tight leading-tight uppercase text-white">
-          TRANSPARENTLY. <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">ENGINEERED.</span> FOREVER.
-        </h1>
-        <p class="text-slate-400 text-sm sm:text-base md:text-base max-w-xl mx-auto leading-relaxed px-2">
-          Elevating modern residential and commercial spaces with high-precision aluminium profiles and ultra-sleek glass solutions.
-        </p>
-      </div>
-
-      <div id="products" class="relative z-10 w-full max-w-6xl mx-auto my-8 md:my-12 px-2 md:px-0" role="region" aria-labelledby="products-heading">
-        <div class="text-center mb-8">
-          <h2 id="products-heading" class="text-3xl md:text-4xl font-bold text-white mb-2">Our Products</h2>
-          <p class="text-slate-400 text-sm md:text-base">Premium windows, doors, and shower screens engineered for perfection</p>
+    <section class="hero" id="hero">
+      <div class="hero-content">
+        <h1>Premium Windows & Doors</h1>
+        <p>Transform your space with EVERLAST's high-quality glass solutions. Durable, elegant, and energy-efficient.</p>
+        <div class="hero-buttons">
+          <button class="btn-primary">Browse Products</button>
+          <button class="btn-primary" style="background: transparent; border: 2px solid var(--primary);">Learn More</button>
         </div>
-
-        <div class="flex flex-wrap justify-center gap-2 mb-8">
-          <button 
-            data-tab="doors" 
-            class="tab-btn active px-6 py-2 rounded-lg font-semibold text-sm transition-all border-2 bg-blue-600/30 border-blue-500/60 text-white"
-            aria-selected="true"
-            aria-controls="doors-content">
-            DOORS (8)
-          </button>
-          <button 
-            data-tab="windows" 
-            class="tab-btn px-6 py-2 rounded-lg font-semibold text-sm transition-all border-2 border-slate-600/40 text-slate-400"
-            aria-selected="false"
-            aria-controls="windows-content">
-            WINDOWS (9)
-          </button>
-          <button 
-            data-tab="shower" 
-            class="tab-btn px-6 py-2 rounded-lg font-semibold text-sm transition-all border-2 border-slate-600/40 text-slate-400"
-            aria-selected="false"
-            aria-controls="shower-content">
-            SHOWER SCREENS (5)
-          </button>
-        </div>
-
-        <div id="doors-content" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" style="display: grid;">
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Sliding Doors</h3>
-            <p class="text-slate-400 text-xs">Smooth, space-saving systems</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Bifold Doors</h3>
-            <p class="text-slate-400 text-xs">Accordion-style folding</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Security Doors</h3>
-            <p class="text-slate-400 text-xs">Reinforced protection</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">French Doors</h3>
-            <p class="text-slate-400 text-xs">Classic glass doors</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Stacker Doors</h3>
-            <p class="text-slate-400 text-xs">Multi-panel systems</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Double Doors</h3>
-            <p class="text-slate-400 text-xs">Double-leaf entry</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Repair Doors</h3>
-            <p class="text-slate-400 text-xs">Professional service</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Hinged Doors</h3>
-            <p class="text-slate-400 text-xs">Traditional swing</p>
-          </article>
-        </div>
-
-        <div id="windows-content" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" style="display: none;">
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Fixed Glass</h3>
-            <p class="text-slate-400 text-xs">Stationary panels</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Slide Windows</h3>
-            <p class="text-slate-400 text-xs">Smooth sliding systems</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Stacker Windows</h3>
-            <p class="text-slate-400 text-xs">Multi-panel stacking</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Bifold Windows</h3>
-            <p class="text-slate-400 text-xs">Accordion-style panes</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Awning Windows</h3>
-            <p class="text-slate-400 text-xs">Top-hinged design</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Louvers Windows</h3>
-            <p class="text-slate-400 text-xs">Horizontal slat systems</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Domestic Windows</h3>
-            <p class="text-slate-400 text-xs">Residential solutions</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Security Windows</h3>
-            <p class="text-slate-400 text-xs">Reinforced safety</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Repair Windows</h3>
-            <p class="text-slate-400 text-xs">Professional service</p>
-          </article>
-        </div>
-
-        <div id="shower-content" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" style="display: none;">
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Shower Screen</h3>
-            <p class="text-slate-400 text-xs">Standard enclosures</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Full Frame</h3>
-            <p class="text-slate-400 text-xs">Fully framed systems</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Full Frame Corner</h3>
-            <p class="text-slate-400 text-xs">Corner-mounted design</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Semi Frameless</h3>
-            <p class="text-slate-400 text-xs">Hybrid frame systems</p>
-          </article>
-          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
-            <h3 class="font-bold text-white mb-2">Frameless</h3>
-            <p class="text-slate-400 text-xs">Minimalist design</p>
-          </article>
-        </div>
-      </div>
-
-      <div class="relative z-10 w-full flex justify-center px-4 md:px-0">
-        <a href="#contact" class="glass-button px-6 md:px-8 py-3 md:py-4 rounded-xl text-xs sm:text-sm md:text-xs font-bold tracking-widest uppercase text-white shadow-lg hover:shadow-xl transition-all">
-          REQUEST CONSULTATION
-        </a>
-      </div>
-
-    </section>
-
-    <section id="projects" class="py-16 md:py-20 px-4 md:px-6 max-w-6xl mx-auto" role="region" aria-labelledby="projects-heading">
-      <div class="text-center max-w-xl mx-auto mb-10 md:mb-12 space-y-2">
-        <h2 id="projects-heading" class="text-2xl md:text-3xl font-extrabold tracking-tight uppercase text-white">Featured Projects</h2>
-        <p class="text-slate-400 text-xs md:text-sm">A showcase of structural precision delivered worldwide.</p>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-        
-        <div class="h-64 rounded-xl overflow-hidden relative group bg-slate-800">
-          <img 
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80" 
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
-            alt="The Glass Pavilion architectural project in Sydney"
-            loading="lazy"
-            width="600"
-            height="400">
-          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-4">
-            <span class="text-xs font-bold text-white">The Glass Pavilion, Sydney</span>
-          </div>
-        </div>
-
-        <div class="h-64 rounded-xl overflow-hidden relative group bg-slate-800">
-          <img 
-            src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=600&q=80" 
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
-            alt="Aero Tower facade project in Dubai"
-            loading="lazy"
-            width="600"
-            height="400">
-          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-4">
-            <span class="text-xs font-bold text-white">Aero Tower Facade, Dubai</span>
-          </div>
-        </div>
-
-        <div class="h-64 rounded-xl overflow-hidden relative group bg-slate-800">
-          <img 
-            src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=600&q=80" 
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
-            alt="Minimalist Villa architectural project in California"
-            loading="lazy"
-            width="600"
-            height="400">
-          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-4">
-            <span class="text-xs font-bold text-white">Minimalist Villa, California</span>
-          </div>
-        </div>
-
       </div>
     </section>
 
-    <section id="about" class="py-12 md:py-16 px-4 md:px-6 max-w-4xl mx-auto text-center" role="region" aria-labelledby="about-heading">
-      <h2 id="about-heading" class="text-2xl md:text-3xl font-extrabold uppercase text-white mb-4">About Everlast</h2>
-      <p class="text-slate-400 text-sm md:text-base leading-relaxed">
-        We redefine architectural boundaries through flawless glass engineering and high-grade aluminium framing systems. Built to withstand the elements while maintaining uncompromised aesthetic elegance.
-      </p>
+    <section class="section" id="products">
+      <div class="section-title">
+        <h2>Our Products</h2>
+        <p>Explore our comprehensive range of premium doors, windows, and shower screens</p>
+      </div>
+
+      <div class="tabs-container">
+        <div class="tabs-nav">
+          <button class="tab-btn active" data-tab="doors">DOORS</button>
+          <button class="tab-btn" data-tab="windows">WINDOWS</button>
+          <button class="tab-btn" data-tab="shower">SHOWER SCREENS</button>
+        </div>
+
+        <div id="doors-tab" class="tab-content active">
+          <div class="products-grid">
+            <div class="product-card">
+              <div class="product-icon">🚪</div>
+              <div class="product-name">Sliding Doors</div>
+              <div class="product-description">Smooth, space-saving sliding door solutions for modern homes</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">📂</div>
+              <div class="product-name">Bifold Doors</div>
+              <div class="product-description">Elegant bifold doors that maximize your interior space</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">🔒</div>
+              <div class="product-name">Security Doors</div>
+              <div class="product-description">High-security doors with advanced locking mechanisms</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">🏠</div>
+              <div class="product-name">French Doors</div>
+              <div class="product-description">Classic French doors with timeless elegance</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">📚</div>
+              <div class="product-name">Stacker Doors</div>
+              <div class="product-description">Premium stacker door systems for large openings</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">⚙️</div>
+              <div class="product-name">Door Repair</div>
+              <div class="product-description">Professional repair and maintenance services</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">🪟</div>
+              <div class="product-name">Double Doors</div>
+              <div class="product-description">Sturdy double door options for entry and interior</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">🔧</div>
+              <div class="product-name">Hinged Doors</div>
+              <div class="product-description">Traditional hinged doors with modern design</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="windows-tab" class="tab-content">
+          <div class="products-grid">
+            <div class="product-card">
+              <div class="product-icon">💎</div>
+              <div class="product-name">Fixed Glass Windows</div>
+              <div class="product-description">Frameless fixed glass for panoramic views</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">📐</div>
+              <div class="product-name">Sliding Windows</div>
+              <div class="product-description">Smooth-operating sliding window systems</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">🔲</div>
+              <div class="product-name">Stacker Windows</div>
+              <div class="product-description">Multi-panel stacking window solutions</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">🎨</div>
+              <div class="product-name">Bifold Windows</div>
+              <div class="product-description">Bi-folding window systems for flexible ventilation</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">💨</div>
+              <div class="product-name">Awning Windows</div>
+              <div class="product-description">Top-hinged awning windows with excellent ventilation</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">🌪️</div>
+              <div class="product-name">Louver Windows</div>
+              <div class="product-description">Adjustable louver windows for climate control</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">🏡</div>
+              <div class="product-name">Domestic Windows</div>
+              <div class="product-description">Residential window solutions for every room</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">🛡️</div>
+              <div class="product-name">Security Windows</div>
+              <div class="product-description">Reinforced security windows with safety features</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">🔧</div>
+              <div class="product-name">Window Repair</div>
+              <div class="product-description">Expert window repair and restoration services</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="shower-tab" class="tab-content">
+          <div class="products-grid">
+            <div class="product-card">
+              <div class="product-icon">🚿</div>
+              <div class="product-name">Shower Screens</div>
+              <div class="product-description">Modern shower enclosures with premium glass</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">🖼️</div>
+              <div class="product-name">Full Frame Shower</div>
+              <div class="product-description">Fully framed shower systems with complete support</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">📏</div>
+              <div class="product-name">Full Frame Corner</div>
+              <div class="product-description">Corner shower solutions with full framing</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">✨</div>
+              <div class="product-name">Semi Frameless</div>
+              <div class="product-description">Contemporary semi-frameless shower enclosures</div>
+            </div>
+            <div class="product-card">
+              <div class="product-icon">💫</div>
+              <div class="product-name">Frameless Shower</div>
+              <div class="product-description">Elegant frameless glass shower screens</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section id="contact" class="py-16 md:py-20 px-4 md:px-6 max-w-2xl mx-auto w-full" role="region" aria-labelledby="contact-heading">
-      <div class="text-center mb-10 md:mb-12">
-        <h2 id="contact-heading" class="text-2xl md:text-3xl font-extrabold tracking-tight uppercase text-white mb-2">Get in Touch</h2>
-        <p class="text-slate-400 text-sm md:text-base">Connect with us through your preferred channel</p>
+    <section class="section contact-section" id="contact">
+      <div class="section-title">
+        <h2>Get In Touch</h2>
+        <p class="contact-intro">Connect with us through your preferred channel</p>
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-        
-        <a 
-          href="tel:+61401877208" 
-          class="subtle-glass rounded-xl md:rounded-2xl p-5 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-3 group hover:border-blue-500/50 transition-all duration-300"
-          aria-label="Call us">
-          <div class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-blue-500/20 flex items-center justify-center group-hover:bg-blue-500/30 transition-all">
-            <svg class="w-5 md:w-6 h-5 md:h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-            </svg>
-          </div>
-          <div class="text-center">
-            <h3 class="text-xs md:text-sm font-bold text-white uppercase">Phone</h3>
-            <p class="text-xs text-slate-400 mt-0.5 md:mt-1 hidden sm:block">0401 877 208</p>
-          </div>
-        </a>
-
-        <a 
-          href="mailto:info@everlast.com" 
-          class="subtle-glass rounded-xl md:rounded-2xl p-5 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-3 group hover:border-blue-500/50 transition-all duration-300"
-          aria-label="Email us">
-          <div class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-blue-500/20 flex items-center justify-center group-hover:bg-blue-500/30 transition-all">
-            <svg class="w-5 md:w-6 h-5 md:h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-            </svg>
-          </div>
-          <div class="text-center">
-            <h3 class="text-xs md:text-sm font-bold text-white uppercase">Email</h3>
-            <p class="text-xs text-slate-400 mt-0.5 md:mt-1 hidden sm:block">info@everlast.com</p>
-          </div>
-        </a>
-
-        <a 
-          href="https://www.facebook.com/share/18TSPGtD59/" 
-          target="_blank"
-          rel="noopener noreferrer"
-          class="subtle-glass rounded-xl md:rounded-2xl p-5 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-3 group hover:border-blue-500/50 transition-all duration-300"
-          aria-label="Follow us on Facebook">
-          <div class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-blue-500/20 flex items-center justify-center group-hover:bg-blue-500/30 transition-all">
-            <svg class="w-5 md:w-6 h-5 md:h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-            </svg>
-          </div>
-          <div class="text-center">
-            <h3 class="text-xs md:text-sm font-bold text-white uppercase">Facebook</h3>
-            <p class="text-xs text-slate-400 mt-0.5 md:mt-1 hidden sm:block">EVERLAST</p>
-          </div>
-        </a>
-
-        <a 
-          href="https://instagram.com/everlast_windows_and_doors" 
-          target="_blank"
-          rel="noopener noreferrer"
-          class="subtle-glass rounded-xl md:rounded-2xl p-5 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-3 group hover:border-blue-500/50 transition-all duration-300"
-          aria-label="Follow us on Instagram">
-          <div class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-blue-500/20 flex items-center justify-center group-hover:bg-blue-500/30 transition-all">
-            <svg class="w-5 md:w-6 h-5 md:h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.266.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073z"/>
-              <path d="M5.838 12a6.162 6.162 0 1 1 12.324 0 6.162 6.162 0 0 1-12.324 0zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4.965-10.322a1.44 1.44 0 1 1 2.881.001 1.44 1.44 0 0 1-2.881-.001z"/>
-            </svg>
-          </div>
-          <div class="text-center">
-            <h3 class="text-xs md:text-sm font-bold text-white uppercase">Instagram</h3>
-            <p class="text-xs text-slate-400 mt-0.5 md:mt-1 hidden sm:block">@everlast_windows</p>
-          </div>
-        </a>
-
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="contact-icon">📞</div>
+          <div class="contact-label">PHONE</div>
+          <a href="tel:+61401877208" class="contact-link">0401 877 208</a>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">✉️</div>
+          <div class="contact-label">EMAIL</div>
+          <a href="mailto:info@everlast.com" class="contact-link">info@everlast.com</a>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">👥</div>
+          <div class="contact-label">FACEBOOK</div>
+          <a href="https://www.facebook.com/share/18TSPGtD59/" class="contact-link" target="_blank">Follow Us</a>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">📸</div>
+          <div class="contact-label">INSTAGRAM</div>
+          <a href="https://instagram.com/everlast_windows_and_doors" class="contact-link" target="_blank">Follow Us</a>
+        </div>
       </div>
 
-      <div class="subtle-glass rounded-xl md:rounded-2xl p-5 md:p-6 mt-8 md:mt-12 text-center">
-        <p class="text-xs md:text-sm text-slate-400 mb-2">Or reach out directly via email for detailed consultations</p>
-        <a href="mailto:info@everlast.com" class="text-sm md:text-base font-semibold text-blue-400 hover:text-blue-300 transition-colors">
-          info@everlast.com
-        </a>
+      <div class="contact-email-box">
+        <p>Or reach out directly via email for detailed consultations</p>
+        <a href="mailto:info@everlast.com" class="contact-email">info@everlast.com</a>
       </div>
     </section>
-
   </main>
 
-  <footer class="w-full border-t border-blue-500/20 py-6 md:py-8 px-4 md:px-6 text-center text-slate-500 text-xs md:text-sm" role="contentinfo">
-    <p>&copy; 2026 EVERLAST Windows & Doors. All rights reserved.</p>
+  <footer>
+    <p>© 2026 EVERLAST Windows & Doors. All rights reserved.</p>
   </footer>
 
-  <div id="chatbot-button" role="button" tabindex="0" aria-label="Open EVERLAST Chat Support" title="Chat with us">
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M14 2C7.37 2 2 6.5 2 12c0 2.5 1 4.8 2.7 6.5L3 26l8.5-5.5C12.5 20.8 13.2 21 14 21c6.63 0 12-4.5 12-10S20.63 2 14 2z" fill="white"/>
-    </svg>
-  </div>
+  <!-- Chatbot Button -->
+  <button id="chatbot-toggle" aria-label="Open chat support" title="Chat with us" style="position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%); border: 2px solid rgba(59, 130, 246, 0.8); box-shadow: 0 4px 24px rgba(37, 99, 235, 0.4), 0 0 20px rgba(59, 130, 246, 0.3); z-index: 35; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; color: white; font-size: 26px; pointer-events: auto;">💬</button>
 
-  <div id="chatbot-window" role="dialog" aria-labelledby="chatbot-title" aria-label="Chat with EVERLAST">
-    <div class="chatbot-header">
-      <h3 id="chatbot-title">EVERLAST Assistant</h3>
-      <div class="chatbot-header-actions">
-        <button id="clear-chat-btn" aria-label="Clear chat history" title="Clear chat">Clear</button>
-        <button id="close-chatbot" aria-label="Close chat" title="Close">×</button>
-      </div>
+  <!-- Chatbot Drawer Backdrop -->
+  <div id="chat-backdrop" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0); opacity: 0; z-index: 30; transition: opacity 0.3s; pointer-events: none;"></div>
+
+  <!-- Chatbot Drawer -->
+  <div id="chat-drawer" style="position: fixed; right: 0; top: 0; width: 380px; max-width: 90vw; height: 100vh; background: rgba(11, 15, 20, 0.98); backdrop-filter: blur(10px); border-left: 1px solid rgba(37, 99, 235, 0.2); z-index: 40; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column;">
+    <!-- Header -->
+    <div style="background: rgba(255, 255, 255, 0.03); padding: 16px 20px; border-bottom: 1px solid rgba(37, 99, 235, 0.25); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; min-height: 56px;">
+      <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #e0e7ff; letter-spacing: 0.5px;">EVERLAST Assistant</h3>
+      <button id="close-chat" aria-label="Close chat" style="background: rgba(148, 163, 184, 0.2); border: 1px solid rgba(148, 163, 184, 0.5); color: #cbd5e1; width: 32px; height: 32px; border-radius: 8px; font-size: 20px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; padding: 0; font-weight: 700;">×</button>
     </div>
-    <div class="chatbot-messages" id="chatbot-messages"></div>
-    <div class="chatbot-input-area">
-      <input 
-        type="text" 
-        id="chatbot-input" 
-        placeholder="Ask about doors, windows..."
-        aria-label="Chat message input">
-      <button id="chatbot-send" aria-label="Send message">→</button>
+    <!-- Messages Container (Scrollable) -->
+    <div id="chat-messages" style="flex: 1; overflow-y: auto; overflow-x: hidden; padding: 16px 14px; display: flex; flex-direction: column; gap: 12px; min-height: 0; will-change: scroll-position;"></div>
+    <!-- Input Area (Fixed at Bottom) -->
+    <div style="padding: 14px; border-top: 1px solid rgba(37, 99, 235, 0.2); display: flex; gap: 10px; flex-shrink: 0; min-height: 50px; align-items: center; background: rgba(11, 15, 20, 0.98);">
+      <input id="chat-input" type="text" placeholder="Ask me anything..." style="flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(37, 99, 235, 0.3); padding: 10px 12px; border-radius: 8px; color: #e0e7ff; font-family: Montserrat, sans-serif; font-size: 13px; transition: all 0.2s; height: 40px;" />
+      <button id="chat-send" aria-label="Send message" style="background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%); border: 1px solid rgba(59, 130, 246, 0.7); border-radius: 8px; color: white; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; font-size: 16px; font-weight: 700; flex-shrink: 0;">→</button>
     </div>
   </div>
 
   <script>
-    // ============================================
-    // Utility Functions
-    // ============================================
-    
-    /**
-     * Show toast notification
-     */
-    function showToast(message, type = 'success') {
-      const toast = document.createElement('div');
-      toast.className = `toast ${type === 'error' ? 'error' : ''}`;
-      toast.textContent = message;
-      toast.setAttribute('role', 'status');
-      toast.setAttribute('aria-live', 'polite');
-      
-      document.body.appendChild(toast);
-      
-      setTimeout(() => {
-        toast.classList.add('hide');
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
-    }
-
-    /**
-     * Validate email format
-     */
-    function isValidEmail(email) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(email);
-    }
-
-    // ============================================
-    // Navbar - Now Always Sticky (No Auto-hide)
-    // ============================================
-    // The navbar is now always visible for better mobile UX
-    // Users can access navigation at any time
-
-    // ============================================
-    // Drawer Management
-    // ============================================
+    // Drawer Toggle
+    const openDrawerBtn = document.getElementById('open-drawer-btn');
+    const closeDrawerBtn = document.getElementById('close-drawer-btn');
     const drawer = document.getElementById('drawer');
-    const backdrop = document.getElementById('drawer-backdrop');
-    const openBtn = document.getElementById('open-drawer-btn');
-    const floatingBtn = document.getElementById('floating-menu-btn');
-    const closeBtn = document.getElementById('close-drawer-btn');
-    const drawerLinks = document.querySelectorAll('.drawer-link');
+    const drawerBackdrop = document.getElementById('drawer-backdrop');
 
-    /**
-     * Open drawer
-     */
-    function openDrawer() {
+    openDrawerBtn.addEventListener('click', () => {
       drawer.classList.add('drawer-open');
-      backdrop.classList.remove('hidden');
-      backdrop.classList.add('backdrop-visible');
-      document.body.classList.add('drawer-open');
-      
-      // Hide floating button
-      floatingBtn.classList.add('hidden-btn');
-      
-      // Update aria-expanded
-      openBtn.setAttribute('aria-expanded', 'true');
-      closeBtn.setAttribute('aria-expanded', 'true');
-      
-      // Focus trap - focus on close button
-      closeBtn.focus();
-    }
+      drawerBackdrop.classList.add('drawer-open');
+    });
 
-    /**
-     * Close drawer
-     */
-    function closeDrawer() {
+    closeDrawerBtn.addEventListener('click', () => {
       drawer.classList.remove('drawer-open');
-      backdrop.classList.remove('backdrop-visible');
-      document.body.classList.remove('drawer-open');
-      
-      // Show floating button
-      floatingBtn.classList.remove('hidden-btn');
-      
-      // Update aria-expanded
-      openBtn.setAttribute('aria-expanded', 'false');
-      closeBtn.setAttribute('aria-expanded', 'false');
-      
-      // Add delay to hide backdrop
-      setTimeout(() => {
-        if (!drawer.classList.contains('drawer-open')) {
-          backdrop.classList.add('hidden');
-        }
-      }, 300);
-    }
-
-    // Event listeners for drawer
-    openBtn.addEventListener('click', openDrawer);
-    floatingBtn.addEventListener('click', openDrawer);
-    closeBtn.addEventListener('click', closeDrawer);
-    backdrop.addEventListener('click', closeDrawer);
-
-    // Close drawer when clicking on links
-    drawerLinks.forEach(link => {
-      link.addEventListener('click', closeDrawer);
+      drawerBackdrop.classList.remove('drawer-open');
     });
 
-    // Close drawer on Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && drawer.classList.contains('drawer-open')) {
-        closeDrawer();
-      }
+    drawerBackdrop.addEventListener('click', () => {
+      drawer.classList.remove('drawer-open');
+      drawerBackdrop.classList.remove('drawer-open');
     });
 
-    // ============================================
-    // Social Media Links (UPDATED)
-    // ============================================
-    // Phone: tel:+61401877208
-    // Email: mailto:info@everlast.com
-    // Facebook: https://www.facebook.com/share/18TSPGtD59/
-    // Instagram: https://instagram.com/everlast_windows_and_doors
-
-    // ============================================
-    // Chatbot Functionality - Floating Window
-    // ============================================
-    // Features:
-    // - Compact floating window (350px x 460px)
-    // - Fixed position bottom-right corner
-    // - Smooth fade + scale animation on open
-    // - AI-styled button with gradient and glow
-    // - Auto-scroll to latest messages
-    // - Auto-clear chat after 2 minutes of inactivity
-    // - Prevents cache buildup and keeps site performance high
-    const chatbotButton = document.getElementById('chatbot-button');
-    const chatbotWindow = document.getElementById('chatbot-window');
-    const closeChatbotBtn = document.getElementById('close-chatbot');
-    const chatbotInput = document.getElementById('chatbot-input');
-    const chatbotSend = document.getElementById('chatbot-send');
-    const chatbotMessages = document.getElementById('chatbot-messages');
-
-    let chatHistory = [];
-    let isLoading = false;
-    let autoClearTimer = null;
-    const clearChatBtn = document.getElementById('clear-chat-btn');
-
-    // Clear chat history
-    function clearChat() {
-      chatbotMessages.innerHTML = '';
-      chatHistory = [];
-      showWelcomeMessage();
-      
-      // Reset auto-clear timer
-      if (autoClearTimer) clearTimeout(autoClearTimer);
-      startAutoClearTimer();
-    }
-
-    // Auto-clear chat after 2 minutes of inactivity
-    function startAutoClearTimer() {
-      if (autoClearTimer) clearTimeout(autoClearTimer);
-      autoClearTimer = setTimeout(() => {
-        if (chatHistory.length > 0) {
-          clearChat();
-        }
-      }, 120000); // 2 minutes
-    }
-
-    clearChatBtn.addEventListener('click', clearChat);
-
-    // Toggle chatbot window
-    function toggleChatbot() {
-      chatbotWindow.classList.toggle('show');
-      chatbotButton.classList.toggle('open');
-      if (chatbotWindow.classList.contains('show')) {
-        chatbotInput.focus();
-        // Reset timer when opening
-        startAutoClearTimer();
-      } else {
-        // Clear timer when closing to save resources
-        if (autoClearTimer) clearTimeout(autoClearTimer);
-      }
-    }
-
-    chatbotButton.addEventListener('click', toggleChatbot);
-    chatbotButton.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        toggleChatbot();
-      }
-    });
-
-    closeChatbotBtn.addEventListener('click', toggleChatbot);
-
-    // Add message to chat
-    function addMessage(text, isUser = true) {
-      const messageDiv = document.createElement('div');
-      messageDiv.className = `chat-message ${isUser ? 'user' : 'bot'}`;
-
-      const bubble = document.createElement('div');
-      bubble.className = 'chat-bubble';
-      bubble.textContent = text;
-
-      messageDiv.appendChild(bubble);
-      chatbotMessages.appendChild(messageDiv);
-      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-    }
-
-    // Show loading indicator
-    function showLoading() {
-      const messageDiv = document.createElement('div');
-      messageDiv.className = 'chat-message bot';
-      messageDiv.id = 'loading-indicator';
-
-      const bubble = document.createElement('div');
-      bubble.className = 'chat-bubble chatbot-loading';
-      bubble.innerHTML = '<span></span><span></span><span></span>';
-
-      messageDiv.appendChild(bubble);
-      chatbotMessages.appendChild(messageDiv);
-      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-    }
-
-    // Remove loading indicator
-    function removeLoading() {
-      const loadingIndicator = document.getElementById('loading-indicator');
-      if (loadingIndicator) {
-        loadingIndicator.remove();
-      }
-    }
-
-    // Send message to API
-    async function sendMessage() {
-      const message = chatbotInput.value.trim();
-      if (!message || isLoading) return;
-
-      // Add user message to chat
-      addMessage(message, true);
-      chatHistory.push({ role: 'user', text: message });
-      chatbotInput.value = '';
-
-      // Reset auto-clear timer on new message
-      startAutoClearTimer();
-
-      isLoading = true;
-      showLoading();
-
-      try {
-        const response = await fetch('https://nova-ai-backend-mryn.onrender.com/everlast-chat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            messages: chatHistory
-          })
-        });
-
-        const data = await response.json();
-        removeLoading();
-
-        if (data.reply) {
-          addMessage(data.reply, false);
-          chatHistory.push({ role: 'assistant', text: data.reply });
-          // Reset auto-clear timer on bot response
-          startAutoClearTimer();
-        } else {
-          addMessage('Sorry, something went wrong. Try again.', false);
-        }
-      } catch (error) {
-        removeLoading();
-        console.error('Chatbot Error:', error);
-        addMessage('Connection error. Please try again.', false);
-      }
-
-      isLoading = false;
-      chatbotInput.focus();
-    }
-
-    // Send on button click
-    chatbotSend.addEventListener('click', sendMessage);
-
-    // Send on Enter key
-    chatbotInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-      }
-    });
-
-    // Welcome message - Show on page load
-    function showWelcomeMessage() {
-      if (chatbotMessages.children.length === 0) {
-        addMessage('Hi! 👋 I\'m here to help with doors, windows & shower screens. Ask me anything!', false);
-        // Start auto-clear timer on welcome message
-        startAutoClearTimer();
-      }
-    }
-
-    // Show welcome message after page loads
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', showWelcomeMessage);
-    } else {
-      showWelcomeMessage();
-    }
-
-    // ============================================
-    // Tab Switching - Products Section
-    // ============================================
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    tabButtons.forEach(btn => {
-      btn.addEventListener('click', function() {
-        const tabName = this.getAttribute('data-tab');
-        
-        // Hide all tabs
-        tabContents.forEach(content => {
-          content.style.display = 'none';
-        });
-        
-        // Remove active styling from all buttons
-        tabButtons.forEach(button => {
-          button.classList.remove('active');
-          button.style.backgroundColor = 'transparent';
-          button.style.borderColor = 'rgba(71, 85, 105, 0.4)';
-          button.style.color = 'rgba(148, 163, 184, 1)';
-          button.setAttribute('aria-selected', 'false');
-        });
-        
-        // Show selected tab
-        document.getElementById(tabName + '-content').style.display = 'grid';
-        
-        // Style active button
-        this.classList.add('active');
-        this.style.backgroundColor = 'rgba(37, 99, 235, 0.3)';
-        this.style.borderColor = 'rgba(59, 130, 246, 0.6)';
-        this.style.color = 'white';
-        this.setAttribute('aria-selected', 'true');
+    document.querySelectorAll('.drawer-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        drawer.classList.remove('drawer-open');
+        drawerBackdrop.classList.remove('drawer-open');
       });
     });
 
-    // ============================================
-    // Smooth Scroll for Anchor Links
-    // ============================================
+    // Tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.getAttribute('data-tab');
+        
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.getElementById(`${tab}-tab`).classList.add('active');
+      });
+    });
+
+    // Smooth scroll for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
+      anchor.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
         if (href === '#' || href === '#!') return;
         
         e.preventDefault();
         const target = document.querySelector(href);
         if (target) {
-          const offsetTop = target.offsetTop - 80; // Account for fixed header
+          const offsetTop = target.offsetTop - 80;
           window.scrollTo({
             top: offsetTop,
             behavior: 'smooth'
@@ -1399,7 +951,168 @@
       });
     });
 
-  </script>
+    // ===== CHATBOT DRAWER =====
+    const chatbot = {
+      toggle: document.getElementById('chatbot-toggle'),
+      drawer: document.getElementById('chat-drawer'),
+      backdrop: document.getElementById('chat-backdrop'),
+      closeBtn: document.getElementById('close-chat'),
+      input: document.getElementById('chat-input'),
+      sendBtn: document.getElementById('chat-send'),
+      messages: document.getElementById('chat-messages'),
+      
+      isOpen: false,
+      history: [],
+      clearTimer: null,
 
+      open() {
+        if (this.isOpen) return;
+        this.isOpen = true;
+        this.drawer.style.transform = 'translateX(0)';
+        this.backdrop.style.background = 'rgba(0, 0, 0, 0.5)';
+        this.backdrop.style.opacity = '1';
+        this.backdrop.style.pointerEvents = 'auto';
+        this.input.focus();
+        this.startClearTimer();
+      },
+
+      close() {
+        if (!this.isOpen) return;
+        this.isOpen = false;
+        this.drawer.style.transform = 'translateX(100%)';
+        this.backdrop.style.background = 'rgba(0, 0, 0, 0)';
+        this.backdrop.style.opacity = '0';
+        this.backdrop.style.pointerEvents = 'none';
+      },
+
+      send() {
+        const message = this.input.value.trim();
+        if (!message) return;
+
+        this.history.push({ role: 'user', content: message });
+        this.addMessage(message, 'user');
+        this.input.value = '';
+
+        // Show loading indicator
+        const loadingMsg = document.createElement('div');
+        loadingMsg.style.display = 'flex';
+        loadingMsg.style.justifyContent = 'flex-start';
+        loadingMsg.id = 'loading-indicator';
+        
+        const spinner = document.createElement('div');
+        spinner.style.width = '30px';
+        spinner.style.height = '30px';
+        spinner.style.borderRadius = '50%';
+        spinner.style.border = '2px solid rgba(37, 99, 235, 0.3)';
+        spinner.style.borderTop = '2px solid #2563eb';
+        spinner.style.animation = 'spin 0.6s linear infinite';
+        
+        loadingMsg.appendChild(spinner);
+        this.messages.appendChild(loadingMsg);
+        
+        // Call API
+        this.callAI(message);
+      },
+
+      async callAI(message) {
+        try {
+          const response = await fetch('https://nova-ai-backend-mryn.onrender.com/everlast-chat', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              message: message,
+              chat_history: this.history
+            })
+          });
+
+          if (!response.ok) throw new Error('API Error');
+          
+          const data = await response.json();
+          const aiResponse = data.response || data.message || "Sorry, I couldn't process that. Please try again.";
+
+          // Remove loading indicator
+          const loading = document.getElementById('loading-indicator');
+          if (loading) loading.remove();
+
+          this.history.push({ role: 'bot', content: aiResponse });
+          this.addMessage(aiResponse, 'bot');
+          this.startClearTimer();
+        } catch (error) {
+          // Remove loading indicator
+          const loading = document.getElementById('loading-indicator');
+          if (loading) loading.remove();
+
+          const errorMsg = "Sorry, I'm having trouble connecting. Please try again in a moment.";
+          this.addMessage(errorMsg, 'bot');
+          this.startClearTimer();
+        }
+      },
+
+      addMessage(text, role) {
+        const msgDiv = document.createElement('div');
+        msgDiv.style.display = 'flex';
+        msgDiv.style.justifyContent = role === 'user' ? 'flex-end' : 'flex-start';
+
+        const bubble = document.createElement('div');
+        bubble.style.maxWidth = '85%';
+        bubble.style.padding = '10px 14px';
+        bubble.style.borderRadius = '12px';
+        bubble.style.fontSize = '13px';
+        bubble.style.lineHeight = '1.45';
+        bubble.style.wordWrap = 'break-word';
+        bubble.style.fontWeight = '500';
+        bubble.textContent = text;
+
+        if (role === 'user') {
+          bubble.style.background = 'linear-gradient(135deg, rgba(74, 144, 226, 0.7), rgba(59, 130, 246, 0.6))';
+          bubble.style.border = '1px solid rgba(74, 144, 226, 0.8)';
+          bubble.style.color = '#f1f5f9';
+        } else {
+          bubble.style.background = 'rgba(255, 255, 255, 0.06)';
+          bubble.style.border = '1px solid rgba(74, 144, 226, 0.3)';
+          bubble.style.color = '#e2e8f0';
+        }
+
+        msgDiv.appendChild(bubble);
+        this.messages.appendChild(msgDiv);
+        requestAnimationFrame(() => {
+          this.messages.scrollTop = this.messages.scrollHeight;
+        });
+      },
+
+      startClearTimer() {
+        if (this.clearTimer) clearTimeout(this.clearTimer);
+        this.clearTimer = setTimeout(() => {
+          if (this.history.length > 0) {
+            this.messages.innerHTML = '';
+            this.history = [];
+            this.addMessage("Hi! 👋 I'm here to help with doors, windows & shower screens. Ask me anything!", 'bot');
+          }
+        }, 120000); // 2 minutes
+      },
+
+      init() {
+        this.addMessage("Hi! 👋 I'm here to help with doors, windows & shower screens. Ask me anything!", 'bot');
+        
+        this.toggle.addEventListener('click', () => this.open());
+        this.closeBtn.addEventListener('click', () => this.close());
+        this.backdrop.addEventListener('click', () => this.close());
+        this.sendBtn.addEventListener('click', () => this.send());
+        
+        this.input.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') this.send();
+        });
+
+        // Escape key to close
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && this.isOpen) this.close();
+        });
+      }
+    };
+
+    chatbot.init();
+  </script>
 </body>
-  </html>
+</html>
