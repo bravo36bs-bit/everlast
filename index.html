@@ -125,6 +125,273 @@
       animation: slideOutDown 0.3s ease forwards;
     }
 
+    /* ========================================
+       CHATBOT STYLES
+       ======================================== */
+    #chatbot-button {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1e5ba8 0%, #4a90e2 100%);
+      border: 2px solid rgba(74, 144, 226, 0.9);
+      box-shadow: 0 4px 20px rgba(30, 91, 168, 0.5), 0 0 20px rgba(74, 144, 226, 0.3);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      font-size: 26px;
+      backdrop-filter: blur(4px);
+    }
+
+    #chatbot-button:hover {
+      transform: scale(1.12) translateY(-4px);
+      box-shadow: 0 8px 32px rgba(30, 91, 168, 0.6), 0 0 24px rgba(74, 144, 226, 0.4);
+    }
+
+    #chatbot-button:active {
+      transform: scale(0.95);
+    }
+
+    #chatbot-button.open {
+      background: linear-gradient(135deg, #1e5ba8 0%, #4a90e2 100%);
+    }
+
+    #chatbot-window {
+      position: fixed;
+      bottom: 100px;
+      right: 24px;
+      width: 380px;
+      max-width: calc(100vw - 32px);
+      height: 550px;
+      max-height: calc(100vh - 140px);
+      background: rgba(11, 15, 20, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(74, 144, 226, 0.6);
+      border-radius: 20px;
+      box-shadow: 0 12px 64px rgba(30, 91, 168, 0.3), 0 0 40px rgba(74, 144, 226, 0.2);
+      display: none;
+      flex-direction: column;
+      z-index: 100;
+      overflow: hidden;
+      animation: slideUpChat 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    #chatbot-window.show {
+      display: flex;
+    }
+
+    @keyframes slideUpChat {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .chatbot-header {
+      background: linear-gradient(135deg, rgba(30, 91, 168, 0.4) 0%, rgba(74, 144, 226, 0.3) 100%);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+      color: #e0e7ff;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(74, 144, 226, 0.4);
+      letter-spacing: 0.5px;
+    }
+
+    .chatbot-header h3 {
+      margin: 0;
+      font-size: 15px;
+      color: #f1f5f9;
+    }
+
+    .chatbot-header button {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(74, 144, 226, 0.3);
+      color: #cbd5e1;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px 8px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .chatbot-header button:hover {
+      background: rgba(74, 144, 226, 0.2);
+      color: #f1f5f9;
+    }
+
+    .chatbot-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .chatbot-messages::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .chatbot-messages::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .chatbot-messages::-webkit-scrollbar-thumb {
+      background: rgba(74, 144, 226, 0.4);
+      border-radius: 3px;
+    }
+
+    .chat-message {
+      display: flex;
+      gap: 8px;
+      animation: fadeInMsg 0.3s ease;
+    }
+
+    @keyframes fadeInMsg {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .chat-message.user {
+      justify-content: flex-end;
+    }
+
+    .chat-bubble {
+      max-width: 85%;
+      padding: 10px 13px;
+      border-radius: 14px;
+      font-size: 13px;
+      line-height: 1.5;
+      word-wrap: break-word;
+      font-weight: 400;
+    }
+
+    .chat-message.user .chat-bubble {
+      background: linear-gradient(135deg, rgba(74, 144, 226, 0.7), rgba(59, 130, 246, 0.6));
+      border: 1px solid rgba(74, 144, 226, 0.8);
+      color: #f1f5f9;
+    }
+
+    .chat-message.bot .chat-bubble {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(74, 144, 226, 0.3);
+      color: #e2e8f0;
+    }
+
+    .chatbot-input-area {
+      padding: 12px;
+      border-top: 1px solid rgba(74, 144, 226, 0.3);
+      display: flex;
+      gap: 8px;
+    }
+
+    #chatbot-input {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(74, 144, 226, 0.4);
+      border-radius: 10px;
+      padding: 9px 12px;
+      color: #f1f5f9;
+      font-size: 13px;
+      font-family: 'Montserrat', sans-serif;
+      transition: all 0.2s ease;
+    }
+
+    #chatbot-input::placeholder {
+      color: rgba(148, 163, 184, 0.6);
+    }
+
+    #chatbot-input:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(74, 144, 226, 0.8);
+      box-shadow: 0 0 12px rgba(74, 144, 226, 0.2);
+    }
+
+    #chatbot-send {
+      background: linear-gradient(135deg, #1e5ba8 0%, #4a90e2 100%);
+      border: 1px solid rgba(74, 144, 226, 0.8);
+      border-radius: 10px;
+      padding: 9px 12px;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+
+    #chatbot-send:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(30, 91, 168, 0.4);
+    }
+
+    #chatbot-send:active {
+      transform: translateY(0);
+    }
+
+    .chatbot-loading {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .chatbot-loading span {
+      width: 6px;
+      height: 6px;
+      background: rgba(74, 144, 226, 0.8);
+      border-radius: 50%;
+      animation: bounce 1.4s infinite;
+    }
+
+    .chatbot-loading span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .chatbot-loading span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes bounce {
+      0%, 100% { opacity: 0.4; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-8px); }
+    }
+
+    @media (max-width: 480px) {
+      #chatbot-window {
+        width: calc(100vw - 16px);
+        right: 8px;
+        bottom: 90px;
+        height: 500px;
+      }
+
+      .chat-bubble {
+        max-width: 85%;
+      }
+    }
+
     /* Loading State */
     .btn-loading {
       pointer-events: none;
@@ -647,6 +914,29 @@
     <p>&copy; 2026 EVERLAST Windows & Doors. All rights reserved.</p>
   </footer>
 
+  <!-- Chatbot Widget -->
+  <div id="chatbot-button" role="button" tabindex="0" aria-label="Open EVERLAST Chat Support" title="Chat with us">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 2C7.37 2 2 6.5 2 12c0 2.5 1 4.8 2.7 6.5L3 26l8.5-5.5C12.5 20.8 13.2 21 14 21c6.63 0 12-4.5 12-10S20.63 2 14 2z" fill="white"/>
+    </svg>
+  </div>
+
+  <div id="chatbot-window" role="dialog" aria-labelledby="chatbot-title" aria-label="Chat with EVERLAST">
+    <div class="chatbot-header">
+      <h3 id="chatbot-title">EVERLAST Assistant</h3>
+      <button id="close-chatbot" aria-label="Close chat">×</button>
+    </div>
+    <div class="chatbot-messages" id="chatbot-messages"></div>
+    <div class="chatbot-input-area">
+      <input 
+        type="text" 
+        id="chatbot-input" 
+        placeholder="Ask about doors, windows..."
+        aria-label="Chat message input">
+      <button id="chatbot-send" aria-label="Send message">→</button>
+    </div>
+  </div>
+
   <!-- Main JavaScript -->
   <script>
     // ============================================
@@ -764,6 +1054,142 @@
     // Email: mailto:info@everlast.com
     // Facebook: https://facebook.com/everlast
     // TikTok: https://tiktok.com/@everlast
+
+    // ============================================
+    // Chatbot Functionality
+    // ============================================
+    const chatbotButton = document.getElementById('chatbot-button');
+    const chatbotWindow = document.getElementById('chatbot-window');
+    const closeChatbotBtn = document.getElementById('close-chatbot');
+    const chatbotInput = document.getElementById('chatbot-input');
+    const chatbotSend = document.getElementById('chatbot-send');
+    const chatbotMessages = document.getElementById('chatbot-messages');
+
+    let chatHistory = [];
+    let isLoading = false;
+
+    // Toggle chatbot window
+    function toggleChatbot() {
+      chatbotWindow.classList.toggle('show');
+      chatbotButton.classList.toggle('open');
+      if (chatbotWindow.classList.contains('show')) {
+        chatbotInput.focus();
+      }
+    }
+
+    chatbotButton.addEventListener('click', toggleChatbot);
+    chatbotButton.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        toggleChatbot();
+      }
+    });
+
+    closeChatbotBtn.addEventListener('click', toggleChatbot);
+
+    // Add message to chat
+    function addMessage(text, isUser = true) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `chat-message ${isUser ? 'user' : 'bot'}`;
+
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-bubble';
+      bubble.textContent = text;
+
+      messageDiv.appendChild(bubble);
+      chatbotMessages.appendChild(messageDiv);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+
+    // Show loading indicator
+    function showLoading() {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'chat-message bot';
+      messageDiv.id = 'loading-indicator';
+
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-bubble chatbot-loading';
+      bubble.innerHTML = '<span></span><span></span><span></span>';
+
+      messageDiv.appendChild(bubble);
+      chatbotMessages.appendChild(messageDiv);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+
+    // Remove loading indicator
+    function removeLoading() {
+      const loadingIndicator = document.getElementById('loading-indicator');
+      if (loadingIndicator) {
+        loadingIndicator.remove();
+      }
+    }
+
+    // Send message to API
+    async function sendMessage() {
+      const message = chatbotInput.value.trim();
+      if (!message || isLoading) return;
+
+      // Add user message to chat
+      addMessage(message, true);
+      chatHistory.push({ role: 'user', text: message });
+      chatbotInput.value = '';
+
+      isLoading = true;
+      showLoading();
+
+      try {
+        const response = await fetch('https://nova-ai-backend-mryn.onrender.com/everlast-chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            messages: chatHistory
+          })
+        });
+
+        const data = await response.json();
+        removeLoading();
+
+        if (data.reply) {
+          addMessage(data.reply, false);
+          chatHistory.push({ role: 'assistant', text: data.reply });
+        } else {
+          addMessage('Sorry, something went wrong. Try again.', false);
+        }
+      } catch (error) {
+        removeLoading();
+        console.error('Chatbot Error:', error);
+        addMessage('Connection error. Please try again.', false);
+      }
+
+      isLoading = false;
+      chatbotInput.focus();
+    }
+
+    // Send on button click
+    chatbotSend.addEventListener('click', sendMessage);
+
+    // Send on Enter key
+    chatbotInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    // Welcome message - Show on page load
+    function showWelcomeMessage() {
+      if (chatbotMessages.children.length === 0) {
+        addMessage('Hi! 👋 I\'m here to help with doors, windows & shower screens. Ask me anything!', false);
+      }
+    }
+
+    // Show welcome message after page loads
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', showWelcomeMessage);
+    } else {
+      showWelcomeMessage();
+    }
 
     // ============================================
     // Tab Switching - Products Section
