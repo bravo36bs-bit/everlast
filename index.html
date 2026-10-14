@@ -59,6 +59,10 @@
       box-shadow: 0 4px 20px rgba(74, 144, 226, 0.1);
     }
 
+    #navbar.nav-hidden {
+      /* Removed - navbar stays visible */
+    }
+
     /* Drawer Styles */
     #drawer {
       transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -256,7 +260,54 @@
     }
 
     #clear-chat-btn {
-      display: none;
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      color: #fca5a5;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    #clear-chat-btn:hover {
+      background: rgba(239, 68, 68, 0.35);
+      border-color: rgba(239, 68, 68, 0.8);
+      color: #fecaca;
+    }
+
+    #clear-chat-btn:active {
+      transform: scale(0.96);
+    }
+
+    #close-chatbot {
+      background: rgba(148, 163, 184, 0.2);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: #cbd5e1;
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    #close-chatbot:hover {
+      background: rgba(148, 163, 184, 0.35);
+      border-color: rgba(148, 163, 184, 0.8);
+      color: #f1f5f9;
+    }
+
+    #close-chatbot:active {
+      transform: scale(0.92);
     }
 
     .chatbot-messages {
@@ -1309,4 +1360,4 @@
   </script>
 
 </body>
-</html>
+  </html>
