@@ -263,15 +263,18 @@
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
       </button>
       
-      <!-- Logo - Optimized for mobile and desktop -->
-      <a href="#hero" class="flex items-center gap-1 md:gap-2.5 hover:opacity-90 transition-opacity flex-shrink-0" aria-label="EVERLAST Home">
-        <img 
-          src="./logo.png" 
-          alt="EVERLAST Windows and Doors Logo" 
-          class="h-14 md:h-16 w-auto object-contain drop-shadow-lg"
-          loading="eager"
-          width="200"
-          height="200">
+      <!-- Logo: Circular Ring Badge -->
+      <a href="#hero" class="flex items-center hover:opacity-90 transition-all flex-shrink-0 group" aria-label="EVERLAST Home">
+        <div class="w-16 md:w-20 h-16 md:h-20 rounded-full bg-gradient-to-br from-blue-600/50 to-blue-500/30 border-2 border-blue-400/80 flex items-center justify-center shadow-2xl shadow-blue-500/25 group-hover:shadow-blue-400/50 group-hover:border-blue-300 transition-all duration-300 overflow-hidden backdrop-blur-sm" style="aspect-ratio: 1;">
+          <img 
+            src="./logo.png" 
+            alt="EVERLAST Windows and Doors Logo" 
+            class="w-full h-full object-cover rounded-full"
+            loading="eager"
+            width="180"
+            height="180"
+            style="mix-blend-mode: lighten; filter: brightness(1.1) saturate(1.2) contrast(1.1);">
+        </div>
       </a>
     </div>
     
@@ -348,65 +351,136 @@
         </p>
       </div>
 
-      <!-- Services Grid -->
-      <div id="services" class="relative z-10 w-full max-w-6xl mx-auto my-8 md:my-12 px-2 md:px-0" role="region" aria-labelledby="services-heading">
-        <h2 id="services-heading" class="sr-only">Our Services</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-          
-          <!-- Card 1 -->
-          <article class="subtle-glass rounded-2xl p-4 flex flex-col justify-between group hover:border-blue-500/50 transition-all duration-300">
-            <div class="h-48 w-full rounded-xl overflow-hidden relative mb-4 bg-slate-800">
-              <img 
-                src="https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=600&q=80" 
-                alt="Frameless glass slider doors with panoramic views" 
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                loading="lazy"
-                width="600"
-                height="400">
-            </div>
-            <div>
-              <h3 class="text-sm font-bold tracking-wider uppercase text-white mb-1">FRAMELESS SLIDERS</h3>
-              <p class="text-slate-400 text-xs leading-relaxed mb-4">Ultra-slim profiles designed for maximum panoramic views and seamless indoor-outdoor flow.</p>
-              <a href="#contact" class="text-xs font-semibold text-blue-400 flex items-center gap-1 hover:gap-2 transition-all hover:text-blue-300">Explore System &rarr;</a>
-            </div>
-          </article>
+      <!-- Products Section with Tabs -->
+      <div id="products" class="relative z-10 w-full max-w-6xl mx-auto my-8 md:my-12 px-2 md:px-0" role="region" aria-labelledby="products-heading">
+        <div class="text-center mb-8">
+          <h2 id="products-heading" class="text-3xl md:text-4xl font-bold text-white mb-2">Our Products</h2>
+          <p class="text-slate-400 text-sm md:text-base">Premium windows, doors, and shower screens engineered for perfection</p>
+        </div>
 
-          <!-- Card 2 (Featured) -->
-          <article class="subtle-glass rounded-2xl p-4 flex flex-col justify-between border-blue-500/50 shadow-xl shadow-blue-500/10 group hover:border-blue-400 transition-all duration-300">
-            <div class="h-48 w-full rounded-xl overflow-hidden relative mb-4 bg-slate-800">
-              <img 
-                src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80" 
-                alt="Triple glazed window profiles for thermal and acoustic insulation" 
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                loading="lazy"
-                width="600"
-                height="400">
-            </div>
-            <div>
-              <h3 class="text-sm font-bold tracking-wider uppercase text-blue-400 mb-1">TRIPLE GLAZED PROFILES</h3>
-              <p class="text-slate-400 text-xs leading-relaxed mb-4">Maximum acoustic insulation and thermal performance engineered for extreme climates.</p>
-              <a href="#contact" class="text-xs font-semibold text-blue-400 flex items-center gap-1 hover:gap-2 transition-all">Explore System &rarr;</a>
-            </div>
-          </article>
+        <!-- Tab Navigation -->
+        <div class="flex flex-wrap justify-center gap-2 mb-8">
+          <button 
+            data-tab="doors" 
+            class="tab-btn active px-6 py-2 rounded-lg font-semibold text-sm transition-all border-2 bg-blue-600/30 border-blue-500/60 text-white"
+            aria-selected="true"
+            aria-controls="doors-content">
+            DOORS (8)
+          </button>
+          <button 
+            data-tab="windows" 
+            class="tab-btn px-6 py-2 rounded-lg font-semibold text-sm transition-all border-2 border-slate-600/40 text-slate-400"
+            aria-selected="false"
+            aria-controls="windows-content">
+            WINDOWS (9)
+          </button>
+          <button 
+            data-tab="shower" 
+            class="tab-btn px-6 py-2 rounded-lg font-semibold text-sm transition-all border-2 border-slate-600/40 text-slate-400"
+            aria-selected="false"
+            aria-controls="shower-content">
+            SHOWER SCREENS (5)
+          </button>
+        </div>
 
-          <!-- Card 3 -->
-          <article class="subtle-glass rounded-2xl p-4 flex flex-col justify-between group hover:border-blue-500/50 transition-all duration-300">
-            <div class="h-48 w-full rounded-xl overflow-hidden relative mb-4 bg-slate-800">
-              <img 
-                src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80" 
-                alt="Acoustic curtain wall systems for commercial buildings" 
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                loading="lazy"
-                width="600"
-                height="400">
-            </div>
-            <div>
-              <h3 class="text-sm font-bold tracking-wider uppercase text-white mb-1">ACOUSTIC CURTAIN WALLS</h3>
-              <p class="text-slate-400 text-xs leading-relaxed mb-4">Sophisticated glass facade engineering tailored for high-end commercial and residential buildings.</p>
-              <a href="#contact" class="text-xs font-semibold text-blue-400 flex items-center gap-1 hover:gap-2 transition-all">Explore System &rarr;</a>
-            </div>
+        <!-- DOORS Tab -->
+        <div id="doors-content" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" style="display: grid;">
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Sliding Doors</h3>
+            <p class="text-slate-400 text-xs">Smooth, space-saving systems</p>
           </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Bifold Doors</h3>
+            <p class="text-slate-400 text-xs">Accordion-style folding</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Security Doors</h3>
+            <p class="text-slate-400 text-xs">Reinforced protection</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">French Doors</h3>
+            <p class="text-slate-400 text-xs">Classic glass doors</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Stacker Doors</h3>
+            <p class="text-slate-400 text-xs">Multi-panel systems</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Double Doors</h3>
+            <p class="text-slate-400 text-xs">Double-leaf entry</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Repair Doors</h3>
+            <p class="text-slate-400 text-xs">Professional service</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Hinged Doors</h3>
+            <p class="text-slate-400 text-xs">Traditional swing</p>
+          </article>
+        </div>
 
+        <!-- WINDOWS Tab -->
+        <div id="windows-content" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" style="display: none;">
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Fixed Glass</h3>
+            <p class="text-slate-400 text-xs">Stationary panels</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Slide Windows</h3>
+            <p class="text-slate-400 text-xs">Smooth sliding systems</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Stacker Windows</h3>
+            <p class="text-slate-400 text-xs">Multi-panel stacking</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Bifold Windows</h3>
+            <p class="text-slate-400 text-xs">Accordion-style panes</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Awning Windows</h3>
+            <p class="text-slate-400 text-xs">Top-hinged design</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Louvers Windows</h3>
+            <p class="text-slate-400 text-xs">Horizontal slat systems</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Domestic Windows</h3>
+            <p class="text-slate-400 text-xs">Residential solutions</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Security Windows</h3>
+            <p class="text-slate-400 text-xs">Reinforced safety</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Repair Windows</h3>
+            <p class="text-slate-400 text-xs">Professional service</p>
+          </article>
+        </div>
+
+        <!-- SHOWER SCREENS Tab -->
+        <div id="shower-content" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" style="display: none;">
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Shower Screen</h3>
+            <p class="text-slate-400 text-xs">Standard enclosures</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Full Frame</h3>
+            <p class="text-slate-400 text-xs">Fully framed systems</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Full Frame Corner</h3>
+            <p class="text-slate-400 text-xs">Corner-mounted design</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Semi Frameless</h3>
+            <p class="text-slate-400 text-xs">Hybrid frame systems</p>
+          </article>
+          <article class="subtle-glass rounded-xl p-4 flex flex-col items-center justify-center text-center min-h-40 group hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <h3 class="font-bold text-white mb-2">Frameless</h3>
+            <p class="text-slate-400 text-xs">Minimalist design</p>
+          </article>
         </div>
       </div>
 
@@ -690,6 +764,42 @@
     // Email: mailto:info@everlast.com
     // Facebook: https://facebook.com/everlast
     // TikTok: https://tiktok.com/@everlast
+
+    // ============================================
+    // Tab Switching - Products Section
+    // ============================================
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const tabName = this.getAttribute('data-tab');
+        
+        // Hide all tabs
+        tabContents.forEach(content => {
+          content.style.display = 'none';
+        });
+        
+        // Remove active styling from all buttons
+        tabButtons.forEach(button => {
+          button.classList.remove('active');
+          button.style.backgroundColor = 'transparent';
+          button.style.borderColor = 'rgba(71, 85, 105, 0.4)';
+          button.style.color = 'rgba(148, 163, 184, 1)';
+          button.setAttribute('aria-selected', 'false');
+        });
+        
+        // Show selected tab
+        document.getElementById(tabName + '-content').style.display = 'grid';
+        
+        // Style active button
+        this.classList.add('active');
+        this.style.backgroundColor = 'rgba(37, 99, 235, 0.3)';
+        this.style.borderColor = 'rgba(59, 130, 246, 0.6)';
+        this.style.color = 'white';
+        this.setAttribute('aria-selected', 'true');
+      });
+    });
 
     // ============================================
     // Smooth Scroll for Anchor Links
