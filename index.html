@@ -11,7 +11,7 @@
     * {
       box-sizing: border-box;
     }
-    
+
     html {
       scroll-behavior: smooth;
     }
@@ -126,7 +126,7 @@
     }
 
     /* ========================================
-       CHATBOT STYLES
+       CHATBOT - FLOATING BUTTON
        ======================================== */
     #chatbot-button {
       position: fixed;
@@ -142,11 +142,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 101;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      font-size: 26px;
-      backdrop-filter: blur(4px);
-      position: relative;
+      z-index: 45;
+      transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
       overflow: hidden;
     }
 
@@ -168,7 +165,7 @@
     }
 
     #chatbot-button:hover {
-      transform: scale(1.1) translateY(-4px);
+      transform: scale(1.08);
       box-shadow: 0 8px 32px rgba(37, 99, 235, 0.5), 0 0 24px rgba(59, 130, 246, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
@@ -176,215 +173,169 @@
       transform: scale(0.96);
     }
 
-    #chatbot-button.open {
-      background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
-      box-shadow: 0 4px 24px rgba(29, 78, 216, 0.5), 0 0 20px rgba(37, 99, 235, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    }
-
-    #chatbot-window {
-      position: fixed;
-      bottom: 80px;
-      right: 8px;
-      width: calc(100vw - 16px);
-      max-width: 100%;
-      height: 0;
-      max-height: 70vh;
-      background: rgba(11, 15, 20, 0.96);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(74, 144, 226, 0.5);
-      border-radius: 14px;
-      box-shadow: 0 8px 32px rgba(30, 91, 168, 0.3), 0 0 24px rgba(74, 144, 226, 0.15);
-      display: flex;
-      flex-direction: column;
-      z-index: 100;
-      overflow: hidden;
+    /* Hidden while chat drawer is open (so it never covers the send button) */
+    #chatbot-button.hidden-btn {
       opacity: 0;
-      transform: translateY(20px) scale(0.95);
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform: scale(0.8);
       pointer-events: none;
     }
 
-    #chatbot-window.show {
-      height: 70vh;
+    /* ========================================
+       CHATBOT - DRAWER (opens from right)
+       ======================================== */
+    #chat-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 48;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    #chat-backdrop.show {
       opacity: 1;
-      transform: translateY(0) scale(1);
       pointer-events: auto;
     }
 
-    .chatbot-header {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(8px);
-      padding: 12px 14px;
-      color: #e0e7ff;
-      font-weight: 600;
+    #chat-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(380px, 100vw);
+      height: 100vh;
+      height: 100dvh;
+      background: #0b0f14;
+      border-left: 1px solid rgba(74, 144, 226, 0.25);
+      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #chat-drawer.open {
+      transform: translateX(0);
+    }
+
+    .chat-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 8px;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.03);
       border-bottom: 1px solid rgba(74, 144, 226, 0.25);
-      letter-spacing: 0px;
       flex-shrink: 0;
-      min-height: 44px;
     }
 
-    .chatbot-header h3 {
+    .chat-header h3 {
       margin: 0;
-      font-size: 14px;
+      font-size: 15px;
+      font-weight: 700;
       color: #f1f5f9;
-      font-weight: 600;
     }
 
-    .chatbot-header button {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(74, 144, 226, 0.2);
-      color: #94a3b8;
-      font-size: 16px;
+    .chat-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #chat-clear-btn {
+      background: rgba(239, 68, 68, 0.18);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      color: #fecaca;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
       cursor: pointer;
-      padding: 0;
-      width: 26px;
-      height: 26px;
+      font-family: 'Montserrat', sans-serif;
+      transition: background 0.2s ease;
+    }
+
+    #chat-clear-btn:hover {
+      background: rgba(239, 68, 68, 0.3);
+    }
+
+    #chat-close-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      color: #cbd5e1;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 5px;
-      transition: all 0.2s ease;
+      transition: background 0.2s ease;
     }
 
-    .chatbot-header button:hover {
-      background: rgba(74, 144, 226, 0.15);
-      color: #cbd5e1;
-      border-color: rgba(74, 144, 226, 0.4);
+    #chat-close-btn:hover {
+      background: rgba(74, 144, 226, 0.2);
     }
 
-    #clear-chat-btn {
-      display: none;
-    }
-
-    .chatbot-messages {
+    #chat-messages {
       flex: 1;
+      min-height: 0;
       overflow-y: auto;
       overflow-x: hidden;
-      padding: 12px 12px;
+      padding: 16px 14px;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      min-height: 0;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
     }
 
-    .chatbot-messages::-webkit-scrollbar {
+    #chat-messages::-webkit-scrollbar {
       width: 6px;
     }
 
-    .chatbot-messages::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.02);
-    }
-
-    .chatbot-messages::-webkit-scrollbar-thumb {
+    #chat-messages::-webkit-scrollbar-thumb {
       background: rgba(74, 144, 226, 0.4);
       border-radius: 3px;
     }
 
-    .chat-message {
+    .chat-row {
       display: flex;
-      gap: 8px;
-      animation: fadeInMsg 0.3s ease;
     }
 
-    @keyframes fadeInMsg {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .chat-message.user {
+    .chat-row.user {
       justify-content: flex-end;
+    }
+
+    .chat-row.bot {
+      justify-content: flex-start;
     }
 
     .chat-bubble {
       max-width: 85%;
-      padding: 8px 11px;
+      padding: 9px 13px;
       border-radius: 12px;
-      font-size: 12px;
-      line-height: 1.4;
+      font-size: 13px;
+      line-height: 1.45;
       word-wrap: break-word;
-      font-weight: 400;
+      white-space: pre-wrap;
     }
 
-    .chat-message.user .chat-bubble {
+    .chat-row.user .chat-bubble {
       background: linear-gradient(135deg, rgba(74, 144, 226, 0.7), rgba(59, 130, 246, 0.6));
       border: 1px solid rgba(74, 144, 226, 0.8);
       color: #f1f5f9;
     }
 
-    .chat-message.bot .chat-bubble {
+    .chat-row.bot .chat-bubble {
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(74, 144, 226, 0.3);
       color: #e2e8f0;
-    }
-
-    .chatbot-input-area {
-      padding: 10px 12px;
-      border-top: 1px solid rgba(74, 144, 226, 0.2);
-      display: flex;
-      gap: 6px;
-      flex-shrink: 0;
-      min-height: 44px;
-      align-items: center;
-    }
-
-    #chatbot-input {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(74, 144, 226, 0.3);
-      border-radius: 8px;
-      padding: 8px 12px;
-      color: #f1f5f9;
-      font-size: 12px;
-      font-family: 'Montserrat', sans-serif;
-      transition: all 0.2s ease;
-      height: 36px;
-    }
-
-    #chatbot-input::placeholder {
-      color: rgba(148, 163, 184, 0.5);
-    }
-
-    #chatbot-input:focus {
-      outline: none;
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(74, 144, 226, 0.6);
-      box-shadow: 0 0 8px rgba(74, 144, 226, 0.15);
-    }
-
-    #chatbot-send {
-      background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-      border: 1px solid rgba(59, 130, 246, 0.7);
-      border-radius: 8px;
-      padding: 0;
-      color: white;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 14px;
-      transition: all 0.2s ease;
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    #chatbot-send:hover {
-      background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
-      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
-    }
-
-    #chatbot-send:active {
-      transform: scale(0.96);
     }
 
     .chatbot-loading {
@@ -411,37 +362,62 @@
 
     @keyframes bounce {
       0%, 100% { opacity: 0.4; transform: translateY(0); }
-      50% { opacity: 1; transform: translateY(-8px); }
+      50% { opacity: 1; transform: translateY(-6px); }
     }
 
-    @media (min-width: 768px) {
-      #chatbot-window {
-        width: 350px;
-        bottom: 100px;
-        right: 24px;
-        border-radius: 16px;
-        max-height: 500px;
-      }
+    .chat-input-area {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 12px 14px;
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
+      border-top: 1px solid rgba(74, 144, 226, 0.2);
+      background: #0b0f14;
+      flex-shrink: 0;
+    }
 
-      #chatbot-window.show {
-        height: 460px;
-        max-height: 500px;
-      }
+    #chat-input {
+      flex: 1;
+      min-width: 0;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(74, 144, 226, 0.3);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #f1f5f9;
+      font-size: 16px;
+      font-family: 'Montserrat', sans-serif;
+      transition: border-color 0.2s ease;
+    }
 
-      .chatbot-header h3 {
-        font-size: 14px;
-      }
+    #chat-input::placeholder {
+      color: rgba(148, 163, 184, 0.6);
+    }
 
-      .chat-bubble {
-        max-width: 85%;
-        font-size: 12px;
-        padding: 8px 11px;
-      }
+    #chat-input:focus {
+      outline: none;
+      border-color: rgba(74, 144, 226, 0.7);
+    }
 
-      #chatbot-input {
-        font-size: 12px;
-        padding: 8px 12px;
-      }
+    #chat-send {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      border-radius: 8px;
+      border: 1px solid rgba(59, 130, 246, 0.7);
+      background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #chat-send:disabled {
+      opacity: 0.5;
+      cursor: default;
     }
 
     /* Loading State */
@@ -528,7 +504,7 @@
       outline-offset: 2px;
     }
 
-    /* Floating Button Animation */
+    /* Floating Menu Button */
     #floating-menu-btn {
       transition: opacity 0.3s ease, transform 0.3s ease;
     }
@@ -555,20 +531,20 @@
   <a href="#main-content" class="skip-to-content">Skip to main content</a>
   <header id="navbar" class="w-full bg-gradient-to-b from-[#0b0f14]/95 to-[#0a0d12]/90 backdrop-blur-xl border-b border-blue-500/20 py-2 px-4 md:px-6 sticky top-0 z-50 flex items-center justify-between shadow-lg transition-all duration-300" role="banner">
     <div class="flex items-center gap-2 md:gap-3">
-      <button 
-        id="open-drawer-btn" 
-        class="p-2 hover:bg-white/10 rounded-lg transition-colors text-white focus:outline-none md:hidden" 
+      <button
+        id="open-drawer-btn"
+        class="p-2 hover:bg-white/10 rounded-lg transition-colors text-white focus:outline-none md:hidden"
         aria-label="Open navigation menu"
         aria-expanded="false"
         aria-controls="drawer">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
       </button>
-      
+
       <a href="#hero" class="flex items-center hover:opacity-90 transition-all flex-shrink-0 group" aria-label="EVERLAST Home">
         <div class="w-16 md:w-20 h-16 md:h-20 rounded-full bg-gradient-to-br from-blue-600/50 to-blue-500/30 border-2 border-blue-400/80 flex items-center justify-center shadow-2xl shadow-blue-500/25 group-hover:shadow-blue-400/50 group-hover:border-blue-300 transition-all duration-300 overflow-hidden backdrop-blur-sm" style="aspect-ratio: 1;">
-          <img 
-            src="./logo.png" 
-            alt="EVERLAST Windows and Doors Logo" 
+          <img
+            src="./logo.png"
+            alt="EVERLAST Windows and Doors Logo"
             class="w-full h-full object-cover rounded-full"
             loading="eager"
             width="180"
@@ -577,7 +553,7 @@
         </div>
       </a>
     </div>
-    
+
     <nav class="hidden md:flex items-center gap-8 text-xs font-semibold tracking-wider text-slate-300" role="navigation" aria-label="Main navigation">
       <a href="#hero" class="hover:text-blue-400 transition-colors duration-200">HOME</a>
       <a href="#services" class="hover:text-blue-400 transition-colors duration-200">SERVICES</a>
@@ -598,9 +574,9 @@
     <div>
       <div class="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
         <span class="font-extrabold text-sm tracking-widest text-white">MENU</span>
-        <button 
-          id="close-drawer-btn" 
-          class="p-2 text-slate-400 hover:text-white transition-colors" 
+        <button
+          id="close-drawer-btn"
+          class="p-2 text-slate-400 hover:text-white transition-colors"
           aria-label="Close navigation menu"
           aria-expanded="true"
           aria-controls="drawer">
@@ -621,9 +597,9 @@
   </div>
 
   <!-- Floating Menu Button (Mobile) -->
-  <button 
-    id="floating-menu-btn" 
-    class="fixed bottom-6 left-6 z-40 bg-blue-600/30 backdrop-blur-md border border-blue-500/60 text-blue-400 p-3.5 rounded-full shadow-2xl hover:bg-blue-600/50 transition-all flex items-center justify-center md:hidden" 
+  <button
+    id="floating-menu-btn"
+    class="fixed bottom-6 left-6 z-40 bg-blue-600/30 backdrop-blur-md border border-blue-500/60 text-blue-400 p-3.5 rounded-full shadow-2xl hover:bg-blue-600/50 transition-all flex items-center justify-center md:hidden"
     aria-label="Open navigation menu"
     aria-expanded="false"
     aria-controls="drawer">
@@ -632,9 +608,9 @@
 
   <main id="main-content">
 
-    <section id="hero" class="relative w-full min-h-screen pt-24 md:pt-32 pb-12 md:pb-16 flex flex-col justify-between items-center bg-cover bg-center px-4 md:px-6" 
+    <section id="hero" class="relative w-full min-h-screen pt-24 md:pt-32 pb-12 md:pb-16 flex flex-col justify-between items-center bg-cover bg-center px-4 md:px-6"
              style="background-image: linear-gradient(to bottom, rgba(11,15,20,0.7), rgba(11,15,20,0.9)), url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80');">
-      
+
       <div class="relative z-10 text-center max-w-3xl mx-auto mt-8 space-y-4">
         <span class="inline-block px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase text-blue-300 bg-blue-600/15 border border-blue-500/40">
           Next-Gen Architectural Systems
@@ -654,22 +630,22 @@
         </div>
 
         <div class="flex flex-wrap justify-center gap-2 mb-8">
-          <button 
-            data-tab="doors" 
+          <button
+            data-tab="doors"
             class="tab-btn active px-6 py-2 rounded-lg font-semibold text-sm transition-all border-2 bg-blue-600/30 border-blue-500/60 text-white"
             aria-selected="true"
             aria-controls="doors-content">
             DOORS (8)
           </button>
-          <button 
-            data-tab="windows" 
+          <button
+            data-tab="windows"
             class="tab-btn px-6 py-2 rounded-lg font-semibold text-sm transition-all border-2 border-slate-600/40 text-slate-400"
             aria-selected="false"
             aria-controls="windows-content">
             WINDOWS (9)
           </button>
-          <button 
-            data-tab="shower" 
+          <button
+            data-tab="shower"
             class="tab-btn px-6 py-2 rounded-lg font-semibold text-sm transition-all border-2 border-slate-600/40 text-slate-400"
             aria-selected="false"
             aria-controls="shower-content">
@@ -789,11 +765,11 @@
         <p class="text-slate-400 text-xs md:text-sm">A showcase of structural precision delivered worldwide.</p>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-        
+
         <div class="h-64 rounded-xl overflow-hidden relative group bg-slate-800">
-          <img 
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80" 
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+          <img
+            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             alt="The Glass Pavilion architectural project in Sydney"
             loading="lazy"
             width="600"
@@ -804,9 +780,9 @@
         </div>
 
         <div class="h-64 rounded-xl overflow-hidden relative group bg-slate-800">
-          <img 
-            src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=600&q=80" 
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+          <img
+            src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=600&q=80"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             alt="Aero Tower facade project in Dubai"
             loading="lazy"
             width="600"
@@ -817,9 +793,9 @@
         </div>
 
         <div class="h-64 rounded-xl overflow-hidden relative group bg-slate-800">
-          <img 
-            src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=600&q=80" 
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+          <img
+            src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=600&q=80"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             alt="Minimalist Villa architectural project in California"
             loading="lazy"
             width="600"
@@ -846,9 +822,9 @@
       </div>
 
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-        
-        <a 
-          href="tel:+61401877208" 
+
+        <a
+          href="tel:+61401877208"
           class="subtle-glass rounded-xl md:rounded-2xl p-5 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-3 group hover:border-blue-500/50 transition-all duration-300"
           aria-label="Call us">
           <div class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-blue-500/20 flex items-center justify-center group-hover:bg-blue-500/30 transition-all">
@@ -862,8 +838,8 @@
           </div>
         </a>
 
-        <a 
-          href="mailto:info@everlast.com" 
+        <a
+          href="mailto:info@everlast.com"
           class="subtle-glass rounded-xl md:rounded-2xl p-5 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-3 group hover:border-blue-500/50 transition-all duration-300"
           aria-label="Email us">
           <div class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-blue-500/20 flex items-center justify-center group-hover:bg-blue-500/30 transition-all">
@@ -877,8 +853,8 @@
           </div>
         </a>
 
-        <a 
-          href="https://www.facebook.com/share/18TSPGtD59/" 
+        <a
+          href="https://www.facebook.com/share/18TSPGtD59/"
           target="_blank"
           rel="noopener noreferrer"
           class="subtle-glass rounded-xl md:rounded-2xl p-5 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-3 group hover:border-blue-500/50 transition-all duration-300"
@@ -894,8 +870,8 @@
           </div>
         </a>
 
-        <a 
-          href="https://instagram.com/everlast_windows_and_doors" 
+        <a
+          href="https://instagram.com/everlast_windows_and_doors"
           target="_blank"
           rel="noopener noreferrer"
           class="subtle-glass rounded-xl md:rounded-2xl p-5 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-3 group hover:border-blue-500/50 transition-all duration-300"
@@ -928,70 +904,66 @@
     <p>&copy; 2026 EVERLAST Windows & Doors. All rights reserved.</p>
   </footer>
 
+  <!-- Floating AI Button (right side) -->
   <div id="chatbot-button" role="button" tabindex="0" aria-label="Open EVERLAST Chat Support" title="Chat with us">
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M14 2C7.37 2 2 6.5 2 12c0 2.5 1 4.8 2.7 6.5L3 26l8.5-5.5C12.5 20.8 13.2 21 14 21c6.63 0 12-4.5 12-10S20.63 2 14 2z" fill="white"/>
     </svg>
   </div>
 
-  <div id="chatbot-window" role="dialog" aria-labelledby="chatbot-title" aria-label="Chat with EVERLAST">
-    <div class="chatbot-header">
-      <h3 id="chatbot-title">EVERLAST Assistant</h3>
-      <div style="display: flex; gap: 6px;">
-        <button id="clear-chat-btn" aria-label="Clear chat history" title="Clear all messages">Clear</button>
-        <button id="close-chatbot" aria-label="Close chat">×</button>
+  <!-- Chat Drawer Backdrop -->
+  <div id="chat-backdrop" aria-hidden="true"></div>
+
+  <!-- Chat Drawer (opens from right) -->
+  <aside id="chat-drawer" role="dialog" aria-modal="true" aria-labelledby="chat-title" aria-label="Chat with EVERLAST">
+    <div class="chat-header">
+      <h3 id="chat-title">EVERLAST Assistant</h3>
+      <div class="chat-header-actions">
+        <button id="chat-clear-btn" type="button" aria-label="Clear chat" title="Clear chat">Clear</button>
+        <button id="chat-close-btn" type="button" aria-label="Close chat" title="Close">&times;</button>
       </div>
     </div>
-    <div class="chatbot-messages" id="chatbot-messages"></div>
-    <div class="chatbot-input-area">
-      <input 
-        type="text" 
-        id="chatbot-input" 
+
+    <div id="chat-messages" aria-live="polite"></div>
+
+    <div class="chat-input-area">
+      <input
+        type="text"
+        id="chat-input"
         placeholder="Ask about doors, windows..."
-        aria-label="Chat message input">
-      <button id="chatbot-send" aria-label="Send message">→</button>
+        aria-label="Chat message input"
+        autocomplete="off">
+      <button id="chat-send" type="button" aria-label="Send message">&rarr;</button>
     </div>
-  </div>
+  </aside>
 
   <script>
     // ============================================
     // Utility Functions
     // ============================================
-    
-    /**
-     * Show toast notification
-     */
+
     function showToast(message, type = 'success') {
       const toast = document.createElement('div');
       toast.className = `toast ${type === 'error' ? 'error' : ''}`;
       toast.textContent = message;
       toast.setAttribute('role', 'status');
       toast.setAttribute('aria-live', 'polite');
-      
+
       document.body.appendChild(toast);
-      
+
       setTimeout(() => {
         toast.classList.add('hide');
         setTimeout(() => toast.remove(), 300);
       }, 3000);
     }
 
-    /**
-     * Validate email format
-     */
     function isValidEmail(email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     }
 
     // ============================================
-    // Navbar - Now Always Sticky (No Auto-hide)
-    // ============================================
-    // The navbar is now always visible for better mobile UX
-    // Users can access navigation at any time
-
-    // ============================================
-    // Drawer Management
+    // Navigation Drawer (left)
     // ============================================
     const drawer = document.getElementById('drawer');
     const backdrop = document.getElementById('drawer-backdrop');
@@ -1000,42 +972,24 @@
     const closeBtn = document.getElementById('close-drawer-btn');
     const drawerLinks = document.querySelectorAll('.drawer-link');
 
-    /**
-     * Open drawer
-     */
     function openDrawer() {
       drawer.classList.add('drawer-open');
       backdrop.classList.remove('hidden');
       backdrop.classList.add('backdrop-visible');
       document.body.classList.add('drawer-open');
-      
-      // Hide floating button
       floatingBtn.classList.add('hidden-btn');
-      
-      // Update aria-expanded
       openBtn.setAttribute('aria-expanded', 'true');
       closeBtn.setAttribute('aria-expanded', 'true');
-      
-      // Focus trap - focus on close button
       closeBtn.focus();
     }
 
-    /**
-     * Close drawer
-     */
     function closeDrawer() {
       drawer.classList.remove('drawer-open');
       backdrop.classList.remove('backdrop-visible');
       document.body.classList.remove('drawer-open');
-      
-      // Show floating button
       floatingBtn.classList.remove('hidden-btn');
-      
-      // Update aria-expanded
       openBtn.setAttribute('aria-expanded', 'false');
       closeBtn.setAttribute('aria-expanded', 'false');
-      
-      // Add delay to hide backdrop
       setTimeout(() => {
         if (!drawer.classList.contains('drawer-open')) {
           backdrop.classList.add('hidden');
@@ -1043,163 +997,115 @@
       }, 300);
     }
 
-    // Event listeners for drawer
     openBtn.addEventListener('click', openDrawer);
     floatingBtn.addEventListener('click', openDrawer);
     closeBtn.addEventListener('click', closeDrawer);
     backdrop.addEventListener('click', closeDrawer);
-
-    // Close drawer when clicking on links
-    drawerLinks.forEach(link => {
-      link.addEventListener('click', closeDrawer);
-    });
-
-    // Close drawer on Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && drawer.classList.contains('drawer-open')) {
-        closeDrawer();
-      }
-    });
+    drawerLinks.forEach(link => link.addEventListener('click', closeDrawer));
 
     // ============================================
-    // Social Media Links (UPDATED)
+    // Chat Drawer (right) + AI Assistant
     // ============================================
-    // Phone: tel:+61401877208
-    // Email: mailto:info@everlast.com
-    // Facebook: https://www.facebook.com/share/18TSPGtD59/
-    // Instagram: https://instagram.com/everlast_windows_and_doors
-
-    // ============================================
-    // Chatbot Functionality - Floating Window
-    // ============================================
-    // Features:
-    // - Compact floating window (350px x 460px)
-    // - Fixed position bottom-right corner
-    // - Smooth fade + scale animation on open
-    // - AI-styled button with gradient and glow
-    // - Auto-scroll to latest messages
-    // - Auto-clear chat after 2 minutes of inactivity
-    // - Prevents cache buildup and keeps site performance high
     const chatbotButton = document.getElementById('chatbot-button');
-    const chatbotWindow = document.getElementById('chatbot-window');
-    const closeChatbotBtn = document.getElementById('close-chatbot');
-    const chatbotInput = document.getElementById('chatbot-input');
-    const chatbotSend = document.getElementById('chatbot-send');
-    const chatbotMessages = document.getElementById('chatbot-messages');
+    const chatDrawer = document.getElementById('chat-drawer');
+    const chatBackdrop = document.getElementById('chat-backdrop');
+    const chatCloseBtn = document.getElementById('chat-close-btn');
+    const chatClearBtn = document.getElementById('chat-clear-btn');
+    const chatInput = document.getElementById('chat-input');
+    const chatSend = document.getElementById('chat-send');
+    const chatMessages = document.getElementById('chat-messages');
+
+    const WELCOME_TEXT = "Hi! 👋 I'm here to help with doors, windows & shower screens. Ask me anything!";
+    const AUTO_CLEAR_MS = 120000; // 2 minutes
 
     let chatHistory = [];
     let isLoading = false;
     let autoClearTimer = null;
-    const clearChatBtn = document.getElementById('clear-chat-btn');
 
-    // Clear chat history
+    function isChatOpen() {
+      return chatDrawer.classList.contains('open');
+    }
+
+    function openChat() {
+      chatDrawer.classList.add('open');
+      chatBackdrop.classList.add('show');
+      chatbotButton.classList.add('hidden-btn');
+      document.body.classList.add('drawer-open');
+      if (chatMessages.children.length === 0) {
+        addMessage(WELCOME_TEXT, false);
+      }
+      setTimeout(() => chatInput.focus(), 300);
+    }
+
+    function closeChat() {
+      chatDrawer.classList.remove('open');
+      chatBackdrop.classList.remove('show');
+      chatbotButton.classList.remove('hidden-btn');
+      document.body.classList.remove('drawer-open');
+    }
+
     function clearChat() {
-      chatbotMessages.innerHTML = '';
       chatHistory = [];
-      showWelcomeMessage();
-      
-      // Reset auto-clear timer
-      if (autoClearTimer) clearTimeout(autoClearTimer);
+      chatMessages.innerHTML = '';
+      addMessage(WELCOME_TEXT, false);
       startAutoClearTimer();
     }
 
-    // Auto-clear chat after 2 minutes of inactivity
     function startAutoClearTimer() {
       if (autoClearTimer) clearTimeout(autoClearTimer);
-      autoClearTimer = setTimeout(() => {
-        if (chatHistory.length > 0) {
-          clearChat();
-        }
-      }, 120000); // 2 minutes
+      autoClearTimer = setTimeout(clearChat, AUTO_CLEAR_MS);
     }
 
-    clearChatBtn.addEventListener('click', clearChat);
-
-    // Toggle chatbot window
-    function toggleChatbot() {
-      chatbotWindow.classList.toggle('show');
-      chatbotButton.classList.toggle('open');
-      if (chatbotWindow.classList.contains('show')) {
-        chatbotInput.focus();
-        // Reset timer when opening
-        startAutoClearTimer();
-      } else {
-        // Clear timer when closing to save resources
-        if (autoClearTimer) clearTimeout(autoClearTimer);
-      }
-    }
-
-    chatbotButton.addEventListener('click', toggleChatbot);
-    chatbotButton.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        toggleChatbot();
-      }
-    });
-
-    closeChatbotBtn.addEventListener('click', toggleChatbot);
-
-    // Add message to chat
-    function addMessage(text, isUser = true) {
-      const messageDiv = document.createElement('div');
-      messageDiv.className = `chat-message ${isUser ? 'user' : 'bot'}`;
+    function addMessage(text, isUser) {
+      const row = document.createElement('div');
+      row.className = `chat-row ${isUser ? 'user' : 'bot'}`;
 
       const bubble = document.createElement('div');
       bubble.className = 'chat-bubble';
       bubble.textContent = text;
 
-      messageDiv.appendChild(bubble);
-      chatbotMessages.appendChild(messageDiv);
-      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+      row.appendChild(bubble);
+      chatMessages.appendChild(row);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    // Show loading indicator
     function showLoading() {
-      const messageDiv = document.createElement('div');
-      messageDiv.className = 'chat-message bot';
-      messageDiv.id = 'loading-indicator';
+      const row = document.createElement('div');
+      row.className = 'chat-row bot';
+      row.id = 'loading-indicator';
 
       const bubble = document.createElement('div');
       bubble.className = 'chat-bubble chatbot-loading';
       bubble.innerHTML = '<span></span><span></span><span></span>';
 
-      messageDiv.appendChild(bubble);
-      chatbotMessages.appendChild(messageDiv);
-      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+      row.appendChild(bubble);
+      chatMessages.appendChild(row);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    // Remove loading indicator
     function removeLoading() {
-      const loadingIndicator = document.getElementById('loading-indicator');
-      if (loadingIndicator) {
-        loadingIndicator.remove();
-      }
+      const el = document.getElementById('loading-indicator');
+      if (el) el.remove();
     }
 
-    // Send message to API
     async function sendMessage() {
-      const message = chatbotInput.value.trim();
+      const message = chatInput.value.trim();
       if (!message || isLoading) return;
 
-      // Add user message to chat
       addMessage(message, true);
       chatHistory.push({ role: 'user', text: message });
-      chatbotInput.value = '';
-
-      // Reset auto-clear timer on new message
+      chatInput.value = '';
       startAutoClearTimer();
 
       isLoading = true;
+      chatSend.disabled = true;
       showLoading();
 
       try {
         const response = await fetch('https://nova-ai-backend-mryn.onrender.com/everlast-chat', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            messages: chatHistory
-          })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: chatHistory })
         });
 
         const data = await response.json();
@@ -1208,8 +1114,6 @@
         if (data.reply) {
           addMessage(data.reply, false);
           chatHistory.push({ role: 'assistant', text: data.reply });
-          // Reset auto-clear timer on bot response
-          startAutoClearTimer();
         } else {
           addMessage('Sorry, something went wrong. Try again.', false);
         }
@@ -1219,36 +1123,38 @@
         addMessage('Connection error. Please try again.', false);
       }
 
+      startAutoClearTimer();
       isLoading = false;
-      chatbotInput.focus();
+      chatSend.disabled = false;
+      chatInput.focus();
     }
 
-    // Send on button click
-    chatbotSend.addEventListener('click', sendMessage);
+    chatbotButton.addEventListener('click', openChat);
+    chatbotButton.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openChat();
+      }
+    });
 
-    // Send on Enter key
-    chatbotInput.addEventListener('keypress', (e) => {
+    chatCloseBtn.addEventListener('click', closeChat);
+    chatBackdrop.addEventListener('click', closeChat);
+    chatClearBtn.addEventListener('click', clearChat);
+    chatSend.addEventListener('click', sendMessage);
+
+    chatInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         sendMessage();
       }
     });
 
-    // Welcome message - Show on page load
-    function showWelcomeMessage() {
-      if (chatbotMessages.children.length === 0) {
-        addMessage('Hi! 👋 I\'m here to help with doors, windows & shower screens. Ask me anything!', false);
-        // Start auto-clear timer on welcome message
-        startAutoClearTimer();
-      }
-    }
-
-    // Show welcome message after page loads
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', showWelcomeMessage);
-    } else {
-      showWelcomeMessage();
-    }
+    // Escape closes whichever panel is open
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (isChatOpen()) closeChat();
+      if (drawer.classList.contains('drawer-open')) closeDrawer();
+    });
 
     // ============================================
     // Tab Switching - Products Section
@@ -1257,15 +1163,13 @@
     const tabContents = document.querySelectorAll('.tab-content');
 
     tabButtons.forEach(btn => {
-      btn.addEventListener('click', function() {
+      btn.addEventListener('click', function () {
         const tabName = this.getAttribute('data-tab');
-        
-        // Hide all tabs
+
         tabContents.forEach(content => {
           content.style.display = 'none';
         });
-        
-        // Remove active styling from all buttons
+
         tabButtons.forEach(button => {
           button.classList.remove('active');
           button.style.backgroundColor = 'transparent';
@@ -1273,11 +1177,9 @@
           button.style.color = 'rgba(148, 163, 184, 1)';
           button.setAttribute('aria-selected', 'false');
         });
-        
-        // Show selected tab
+
         document.getElementById(tabName + '-content').style.display = 'grid';
-        
-        // Style active button
+
         this.classList.add('active');
         this.style.backgroundColor = 'rgba(37, 99, 235, 0.3)';
         this.style.borderColor = 'rgba(59, 130, 246, 0.6)';
@@ -1293,19 +1195,15 @@
       anchor.addEventListener('click', function (e) {
         const href = this.getAttribute('href');
         if (href === '#' || href === '#!') return;
-        
+
         e.preventDefault();
         const target = document.querySelector(href);
         if (target) {
-          const offsetTop = target.offsetTop - 80; // Account for fixed header
-          window.scrollTo({
-            top: offsetTop,
-            behavior: 'smooth'
-          });
+          const offsetTop = target.offsetTop - 80;
+          window.scrollTo({ top: offsetTop, behavior: 'smooth' });
         }
       });
     });
-
   </script>
 
 </body>
