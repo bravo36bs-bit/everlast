@@ -336,8 +336,10 @@
     }
 
     .chat-row.bot .chat-bubble {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(74, 144, 226, 0.3);
+      max-width: 100%;
+      padding: 4px 2px;
+      background: transparent;
+      border: none;
       color: #e2e8f0;
     }
 
@@ -369,28 +371,47 @@
     }
 
     .chat-input-area {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      padding: 12px 14px;
-      padding-bottom: max(12px, env(safe-area-inset-bottom));
-      border-top: 1px solid rgba(74, 144, 226, 0.2);
+      padding: 10px 12px;
+      padding-bottom: max(10px, env(safe-area-inset-bottom));
       background: #0b0f14;
       flex-shrink: 0;
     }
 
-    #chat-input {
-      flex: 1;
-      min-width: 0;
-      height: 40px;
+    .composer {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 10px 12px 8px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(74, 144, 226, 0.3);
-      border-radius: 8px;
-      padding: 8px 12px;
+      border-radius: 20px;
+      transition: border-color 0.2s ease;
+    }
+
+    .composer:focus-within {
+      border-color: rgba(74, 144, 226, 0.7);
+    }
+
+    #chat-input {
+      width: 100%;
+      min-height: 24px;
+      max-height: 120px;
+      resize: none;
+      overflow-y: auto;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 2px 2px;
       color: #f1f5f9;
       font-size: 16px;
+      line-height: 1.4;
       font-family: 'Montserrat', sans-serif;
-      transition: border-color 0.2s ease;
+    }
+
+    .composer-bar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
     }
 
     #chat-input::placeholder {
@@ -403,19 +424,22 @@
     }
 
     #chat-send {
-      width: 40px;
-      height: 40px;
+      width: 32px;
+      height: 32px;
       flex-shrink: 0;
-      border-radius: 8px;
-      border: 1px solid rgba(59, 130, 246, 0.7);
-      background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+      border-radius: 50%;
+      border: none;
+      background: #2563eb;
       color: white;
-      font-size: 16px;
-      font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: background 0.2s ease, opacity 0.2s ease;
+    }
+
+    #chat-send:hover {
+      background: #1d4ed8;
     }
 
     #chat-send:disabled {
@@ -930,13 +954,19 @@
     <div id="chat-messages" aria-live="polite"></div>
 
     <div class="chat-input-area">
-      <input
-        type="text"
-        id="chat-input"
-        placeholder="Ask about doors, windows..."
-        aria-label="Chat message input"
-        autocomplete="off">
-      <button id="chat-send" type="button" aria-label="Send message">&rarr;</button>
+      <div class="composer">
+        <textarea
+          id="chat-input"
+          rows="1"
+          placeholder="Ask about doors, windows..."
+          aria-label="Chat message input"
+          autocomplete="off"></textarea>
+        <div class="composer-bar">
+          <button id="chat-send" type="button" aria-label="Send message">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>
+          </button>
+        </div>
+      </div>
     </div>
   </aside>
 
@@ -1033,18 +1063,19 @@
       chatDrawer.classList.add('open');
       chatBackdrop.classList.add('show');
       chatbotButton.classList.add('hidden-btn');
-      document.body.classList.add('drawer-open');
       if (chatMessages.children.length === 0) {
         addMessage(WELCOME_TEXT, false);
       }
-      setTimeout(() => chatInput.focus(), 300);
+      // Only auto-focus on desktop; on mobile it opens the keyboard and causes jumps
+      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        setTimeout(() => chatInput.focus(), 300);
+      }
     }
 
     function closeChat() {
       chatDrawer.classList.remove('open');
       chatBackdrop.classList.remove('show');
       chatbotButton.classList.remove('hidden-btn');
-      document.body.classList.remove('drawer-open');
     }
 
     function clearChat() {
@@ -1098,6 +1129,7 @@
       addMessage(message, true);
       chatHistory.push({ role: 'user', text: message });
       chatInput.value = '';
+      autoGrow();
       startAutoClearTimer();
 
       isLoading = true;
@@ -1145,12 +1177,34 @@
     chatClearBtn.addEventListener('click', clearChat);
     chatSend.addEventListener('click', sendMessage);
 
+    // Auto-grow the textarea as the user types (up to its max-height)
+    function autoGrow() {
+      chatInput.style.height = 'auto';
+      chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+    }
+
+    chatInput.addEventListener('input', autoGrow);
+
+    // Enter sends on desktop only; on mobile the send button is used (Enter adds a new line)
+    const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     chatInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
+      if (isDesktop && e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         sendMessage();
       }
     });
+
+    // Keep the drawer exactly above the on-screen keyboard (mobile)
+    if (window.visualViewport) {
+      const fitToViewport = () => {
+        if (!isChatOpen()) return;
+        const vv = window.visualViewport;
+        chatDrawer.style.height = vv.height + 'px';
+        chatDrawer.style.top = vv.offsetTop + 'px';
+      };
+      window.visualViewport.addEventListener('resize', fitToViewport);
+      window.visualViewport.addEventListener('scroll', fitToViewport);
+    }
 
     // Escape closes whichever panel is open
     document.addEventListener('keydown', (e) => {
