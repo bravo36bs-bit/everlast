@@ -203,10 +203,11 @@
     #chat-drawer {
       position: fixed;
       top: 0;
+      bottom: 0;
       right: 0;
-      width: min(380px, 100vw);
-      height: 100vh;
-      height: 100dvh;
+      width: 85vw;
+      max-width: 380px;
+      overflow: hidden;
       background: #0b0f14;
       border-left: 1px solid rgba(74, 144, 226, 0.25);
       box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
@@ -293,6 +294,8 @@
       gap: 10px;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
+      touch-action: pan-y;
+      flex: 1 1 0%;
     }
 
     #chat-messages::-webkit-scrollbar {
