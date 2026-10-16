@@ -1059,6 +1059,13 @@
       return chatDrawer.classList.contains('open');
     }
 
+    // Always jump to the latest message (waits one frame so the new content is laid out)
+    function scrollToBottom() {
+      requestAnimationFrame(() => {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      });
+    }
+
     function openChat() {
       chatDrawer.classList.add('open');
       chatBackdrop.classList.add('show');
@@ -1066,6 +1073,7 @@
       if (chatMessages.children.length === 0) {
         addMessage(WELCOME_TEXT, false);
       }
+      scrollToBottom();
       // Only auto-focus on desktop; on mobile it opens the keyboard and causes jumps
       if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
         setTimeout(() => chatInput.focus(), 300);
@@ -1100,7 +1108,7 @@
 
       row.appendChild(bubble);
       chatMessages.appendChild(row);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
+      scrollToBottom();
     }
 
     function showLoading() {
@@ -1114,7 +1122,7 @@
 
       row.appendChild(bubble);
       chatMessages.appendChild(row);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
+      scrollToBottom();
     }
 
     function removeLoading() {
@@ -1181,6 +1189,7 @@
     function autoGrow() {
       chatInput.style.height = 'auto';
       chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+      scrollToBottom();
     }
 
     chatInput.addEventListener('input', autoGrow);
@@ -1201,6 +1210,7 @@
         const vv = window.visualViewport;
         chatDrawer.style.height = vv.height + 'px';
         chatDrawer.style.top = vv.offsetTop + 'px';
+        scrollToBottom();
       };
       window.visualViewport.addEventListener('resize', fitToViewport);
       window.visualViewport.addEventListener('scroll', fitToViewport);
